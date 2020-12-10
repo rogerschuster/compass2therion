@@ -38,7 +38,7 @@ public class Shot implements Serializable {
     private BigDecimal right;
     private BigDecimal up;
     private BigDecimal down;
-
+   
     public String getFrom() {
         return from;
     }

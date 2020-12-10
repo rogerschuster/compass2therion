@@ -39,6 +39,10 @@ public class Survey implements Serializable {
     private String comment;
     private LocalDate date;
     private BigDecimal declination;
+    private InclinationUnits inclinationUnits;
+    private AzimutUnits azimutUnits;
+    private LengthUnits lengthUnit;
+    private LengthUnits dimensionUnit;
 
     public void add(String caver) {
         cavers.add(caver);
@@ -96,6 +100,38 @@ public class Survey implements Serializable {
 
     public void setDeclination(BigDecimal declination) {
         this.declination = declination;
+    }
+
+    public InclinationUnits getInclinationUnits() {
+        return inclinationUnits;
+    }
+
+    public void setInclinationUnits(InclinationUnits inclinationUnits) {
+        this.inclinationUnits = inclinationUnits;
+    }
+
+    public AzimutUnits getAzimutUnits() {
+        return azimutUnits;
+    }
+
+    public void setAzimutUnits(AzimutUnits azimutUnits) {
+        this.azimutUnits = azimutUnits;
+    }
+
+    public LengthUnits getLengthUnit() {
+        return lengthUnit;
+    }
+
+    public void setLengthUnit(LengthUnits lengthUnit) {
+        this.lengthUnit = lengthUnit;
+    }
+
+    public LengthUnits getDimensionUnit() {
+        return dimensionUnit;
+    }
+
+    public void setDimensionUnit(LengthUnits dimensionUnit) {
+        this.dimensionUnit = dimensionUnit;
     }
 
     @Override
