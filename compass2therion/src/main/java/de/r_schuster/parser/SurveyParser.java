@@ -14,14 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.r_schuster.data;
+package de.r_schuster.parser;
+
+import de.r_schuster.data.Cave;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  *
  * @author roger
  */
-public enum LengthUnits {
-    METRES,
-    FEET_DECIMAL,
-    FEET_INCHES
+public interface SurveyParser {
+
+    Cave parse(String caveName, File file, Charset charset) throws IOException;
+
+    Cave parse(String caveName, InputStream is, Charset charset) throws IOException;
+    
 }

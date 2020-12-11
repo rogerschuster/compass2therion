@@ -33,6 +33,8 @@ public class Survey implements Serializable {
 
     private final List<Shot> shots = new ArrayList<>();
     private final Set<String> cavers = new HashSet<>();
+    private final Set<String> stations = new HashSet<>();
+    private final List<Fields> fieldOrder = new ArrayList<>();
 
     private String caveName;
     private String name;
@@ -44,7 +46,7 @@ public class Survey implements Serializable {
     private LengthUnits lengthUnit;
     private LengthUnits dimensionUnit;
 
-    public void add(String caver) {
+    public void addCaver(String caver) {
         cavers.add(caver);
     }
 
@@ -52,14 +54,28 @@ public class Survey implements Serializable {
         return cavers;
     }
 
-    public void add(Shot shot) {
+    public void addShot(Shot shot) {
         if (!shots.contains(shot)) {
             shots.add(shot);
+            stations.add(shot.getFrom());
+            stations.add(shot.getTo());
         }
     }
 
     public List<Shot> getShots() {
         return shots;
+    }
+
+    public Set<String> getStations() {
+        return stations;
+    }
+
+    public void addField(Fields field) {
+        fieldOrder.add(field);
+    }
+
+    public List<Fields> getFieldOrder() {
+        return fieldOrder;
     }
 
     public String getCaveName() {

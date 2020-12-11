@@ -20,8 +20,14 @@ package de.r_schuster.data;
  *
  * @author roger
  */
-public enum LengthUnits {
-    METRES,
-    FEET_DECIMAL,
-    FEET_INCHES
+public enum Fields {
+    LENGTH,
+    AZIMUT,
+    INCLINATION,
+    REVERSE_AZIMUT,
+    REVERSE_INCLINATION,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
 }

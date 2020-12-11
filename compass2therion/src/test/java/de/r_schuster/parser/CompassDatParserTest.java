@@ -16,6 +16,15 @@
  */
 package de.r_schuster.parser;
 
+import de.r_schuster.data.Cave;
+import de.r_schuster.data.Shot;
+import de.r_schuster.data.Survey;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,9 +57,24 @@ public class CompassDatParserTest {
     public void tearDown() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void simpleSurvey() throws IOException {
+        InputStream is = CompassDatParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
+        SurveyParser parser = new CompassDatParser();
+        Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
+       
+        assertEquals("Kleine Scheuer", cave.getName());
+        
+        assertEquals(1, cave.getSurveys().size());
+        Survey survey = cave.getSurveys().get(0);
+        assertEquals("Höhle", survey.getCaveName());
+        assertEquals("10.1", survey.getName());
+        assertEquals(LocalDate.of(2020, 6, 14), survey.getDate());
+        assertEquals("Katasternummer 7225/10", survey.getComment());
+        assertTrue(survey.getCavers().contains("I. Sachsenmaier"));
+        assertTrue(survey.getCavers().contains("R. Schuster"));
+        assertEquals(new BigDecimal("3.20"), survey.getDeclination());
+        List<Shot> shots = survey.getShots();
+     //   assertEquals(6, shots.size());
+    }
 }

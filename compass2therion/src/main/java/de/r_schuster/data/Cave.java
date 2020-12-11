@@ -28,9 +28,13 @@ import java.util.Objects;
 public class Cave implements Serializable {
 
     private final List<Survey> surveys = new ArrayList<>();
-    private String name;
+    private final String name;
 
-    public void add(Survey survey) {
+    public Cave(String name) {
+        this.name = name;
+    }
+
+    public void addSurvey(Survey survey) {
         if (!surveys.contains(survey)) {
             surveys.add(survey);
         }
@@ -42,10 +46,6 @@ public class Cave implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
