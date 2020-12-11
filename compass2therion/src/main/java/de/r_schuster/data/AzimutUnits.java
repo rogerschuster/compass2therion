@@ -16,11 +16,30 @@
  */
 package de.r_schuster.data;
 
+import de.r_schuster.exceptions.UnknownException;
+
 /**
  *
  * @author roger
  */
 public enum AzimutUnits {
-    DEGREES,
-    GRADS
+    DEGREES('D'),
+    GRADS('R'),
+    QUADS('Q');
+
+    private final char unit;
+
+    private AzimutUnits(char unit) {
+        this.unit = unit;
+    }
+
+    public AzimutUnits getByUnit(char uni) {
+        AzimutUnits[] values = AzimutUnits.values();
+        for (AzimutUnits a : values) {
+            if (a.unit == uni) {
+                return a;
+            }
+        }
+        throw new UnknownException(uni + " is an unknown azimut unit");
+    }
 }

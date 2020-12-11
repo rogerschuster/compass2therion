@@ -16,7 +16,9 @@
  */
 package de.r_schuster.parser;
 
+import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
 import java.io.BufferedReader;
@@ -121,7 +123,7 @@ public class CompassDatParser implements SurveyParser {
             survey.addCaver(caver.trim());
         }
     }
-
+    
     private void parseDeclinationAndFormat(Survey survey, String line) {
         final String decliMatch = "DECLINATION:";
         final String formatMatch = "FORMAT:";
@@ -131,13 +133,24 @@ public class CompassDatParser implements SurveyParser {
         int idx3 = line.indexOf(correctionMatch1);
         
         String decliString = line.substring(idx1 + decliMatch.length(), idx2).trim();
-        if(!"".equals(decliString) && !"0.00".equals(decliString)) {
+        if (!"".equals(decliString) && !"0.00".equals(decliString)) {
             BigDecimal declination = new BigDecimal(decliString);
             survey.setDeclination(declination);
         }
         
         String format = line.substring(idx2 + formatMatch.length(), idx3).trim();
-        
+        for (int i = 0; i < format.length(); i++) {
+            char charAt = format.charAt(i);
+            // Azimut Unit
+            if (i == 0) {
+                AzimutUnits azu = AzimutUnits.QUADS.getByUnit(charAt);
+                survey.setAzimutUnits(azu);
+            } // Length Unit
+            else if (i == 1) {
+                survey.setLengthUnit(LengthUnits.METRES.getByUnit(charAt));
+            }
+        }
+
         // TODO Corrections and Corrections2
     }
 }

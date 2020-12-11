@@ -16,7 +16,9 @@
  */
 package de.r_schuster.parser;
 
+import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
 import java.io.IOException;
@@ -74,6 +76,8 @@ public class CompassDatParserTest {
         assertTrue(survey.getCavers().contains("I. Sachsenmaier"));
         assertTrue(survey.getCavers().contains("R. Schuster"));
         assertEquals(new BigDecimal("3.20"), survey.getDeclination());
+        assertEquals(AzimutUnits.DEGREES, survey.getAzimutUnits());
+        assertEquals(LengthUnits.METRES, survey.getLengthUnit());
         List<Shot> shots = survey.getShots();
      //   assertEquals(6, shots.size());
     }

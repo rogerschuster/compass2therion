@@ -14,33 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.r_schuster.data;
-
-import de.r_schuster.exceptions.UnknownException;
+package de.r_schuster.exceptions;
 
 /**
  *
  * @author roger
  */
-public enum LengthUnits {
-    METRES('M'),
-    FEET_DECIMAL('D'),
-    FEET_INCHES('I');
+public class UnknownException extends RuntimeException {
 
-    private final char unit;
-
-    private LengthUnits(char unit) {
-        this.unit = unit;
+    public UnknownException() {
     }
 
-    public LengthUnits getByUnit(char uni) {
-        LengthUnits[] values = LengthUnits.values();
-        for (LengthUnits l : values) {
-            if (l.unit == uni) {
-                return l;
-            }
-        }
-
-        throw new UnknownException(uni + " is an unknown length unit");
+    public UnknownException(String message) {
+        super(message);
     }
+
 }
