@@ -35,6 +35,10 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.util.Locale;
 
 /**
  *
@@ -124,7 +128,12 @@ public class CompassDatParser implements SurveyParser {
             survey.setComment(comment);
         }
 
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("M d yyyy"));
+        DateTimeFormatter parser = new DateTimeFormatterBuilder()
+                .appendPattern("M d ")
+                .appendValueReduced(ChronoField.YEAR, 2, 4, 1900)
+                .toFormatter(Locale.forLanguageTag("de-DE"));
+
+        LocalDate date = LocalDate.parse(dateString, parser);
         survey.setDate(date);
     }
 

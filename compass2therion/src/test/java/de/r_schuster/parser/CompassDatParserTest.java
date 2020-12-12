@@ -98,4 +98,14 @@ public class CompassDatParserTest {
         List<Shot> shots = survey.getShots();
         //   assertEquals(6, shots.size());
     }
+    
+    @Test
+    public void compatibility() throws IOException {
+        InputStream is = CompassDatParserTest.class.getResourceAsStream("/parser/compatibility.dat");
+        SurveyParser parser = new CompassDatParser();
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
+        
+        Survey survey1 = cave.getSurveys().get(0);
+        assertEquals(LocalDate.of(1968, 9, 21), survey1.getDate());
+    }
 }
