@@ -96,42 +96,49 @@ public class CompassDatParser implements SurveyParser {
         return cave;
     }
 
-    private void parseSurveyName(Survey survey, String line) {
-        final String needle = "SURVEY NAME:";
-        int indexOf = line.indexOf(needle);
-        String name = line.substring(indexOf + needle.length());
+    private void parseSurveyName(final Survey survey, final String line) {
+        final String nameMatch = "SURVEY NAME:";
+        int indexOf = line.indexOf(nameMatch);
+        String name = line.substring(indexOf + nameMatch.length());
         name = name.trim();
         survey.setName(name);
     }
 
-    private void parseSurveyDateAndComment(Survey survey, String line) {
+    private void parseSurveyDateAndComment(final Survey survey, final String line) {
         final String dateMatch = "SURVEY DATE:";
-        final String commentMatch = "COMMENT:";
-        int idx1 = line.indexOf(dateMatch);
-        int idx2 = line.indexOf(commentMatch);
+        final String commentMatch = "COMMENT:"; // comment is optional in COMPASS
+        final int idx1 = line.indexOf(dateMatch);
+        final int idx2 = line.indexOf(commentMatch);
 
-        String dateString = line.substring(idx1 + dateMatch.length(), idx2).trim();
+        String dateString;
+
+        if (idx2 == -1) {
+            dateString = line.substring(idx1 + dateMatch.length()).trim();
+        } else {
+            dateString = line.substring(idx1 + dateMatch.length(), idx2).trim();
+
+            String comment = line.substring(idx2 + commentMatch.length()).trim();
+            survey.setComment(comment);
+        }
+
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("M d yyyy"));
         survey.setDate(date);
-
-        String comment = line.substring(idx2 + commentMatch.length()).trim();
-        survey.setComment(comment);
     }
 
-    private void parseCavers(Survey survey, String line) {
+    private void parseCavers(final Survey survey, final String line) {
         String[] split = line.split(",");
         for (String caver : split) {
             survey.addCaver(caver.trim());
         }
     }
 
-    private void parseDeclinationAndFormat(Survey survey, String line) {
+    private void parseDeclinationAndFormat(final Survey survey, final String line) {
         final String decliMatch = "DECLINATION:";
-        final String formatMatch = "FORMAT:";
-        final String correctionMatch1 = "CORRECTIONS:";
-        int idx1 = line.indexOf(decliMatch);
-        int idx2 = line.indexOf(formatMatch);
-        int idx3 = line.indexOf(correctionMatch1);
+        final String formatMatch = "FORMAT:"; // optional in Compass
+        final String correctionMatch1 = "CORRECTIONS:"; // optional in Compass
+        final int idx1 = line.indexOf(decliMatch);
+        final int idx2 = line.indexOf(formatMatch);
+        final int idx3 = line.indexOf(correctionMatch1);
 
         String decliString = line.substring(idx1 + decliMatch.length(), idx2).trim();
         if (!"".equals(decliString) && !"0.00".equals(decliString)) {
