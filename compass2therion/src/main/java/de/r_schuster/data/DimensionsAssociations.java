@@ -22,28 +22,23 @@ import de.r_schuster.exceptions.NotSupportedException;
  *
  * @author roger
  */
-public enum Fields {
-    LENGTH('L'),
-    AZIMUT('A'),
-    INCLINATION('D'),
-    REVERSE_AZIMUT('a'),
-    REVERSE_INCLINATION('d');
-    
+public enum DimensionsAssociations {
+    FROM('F'),
+    TO('T');
 
-    private final char cha;
+    private final char station;
 
-    private Fields(char cha) {
-        this.cha = cha;
+    private DimensionsAssociations(char station) {
+        this.station = station;
     }
 
-    public static Fields getByType(char type) {
-        for (Fields f : values()) {
-            if (f.cha == type) {
-                return f;
+    public static DimensionsAssociations getByStation(char stat) {
+        for (DimensionsAssociations d : values()) {
+            if (d.station == stat) {
+                return d;
             }
         }
 
-        throw new NotSupportedException(type + " is a not supported field");
+        throw new NotSupportedException(stat + " is not supported");
     }
-
 }

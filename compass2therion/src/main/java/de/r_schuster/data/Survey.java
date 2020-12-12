@@ -20,8 +20,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +36,8 @@ public class Survey implements Serializable {
     private final List<Shot> shots = new ArrayList<>();
     private final List<String> cavers = new ArrayList<>();
     private final Set<String> stations = new HashSet<>();
+    private final Map<Integer, Dimensions> dimensionsOrder = new HashMap<>();
+    private final Map<Integer, ShotItems> shotItemsOrder = new HashMap<>();
 
     private String caveName;
     private String name;
@@ -44,10 +48,8 @@ public class Survey implements Serializable {
     private AzimutUnits azimutUnit;
     private LengthUnits lengthUnit;
     private LengthUnits dimensionUnit;
-    private Dimensions firstDimension;
-    private Dimensions secondDimension;
-    private Dimensions thirdDimension;
-    private Dimensions fourthDimension;
+    private boolean reverse;
+    private DimensionsAssociations dimensionsAssociation;
 
     public void addCaver(String caver) {
         cavers.add(caver);
@@ -145,36 +147,28 @@ public class Survey implements Serializable {
         this.dimensionUnit = dimensionUnit;
     }
 
-    public Dimensions getFirstDimension() {
-        return firstDimension;
+    public Map<Integer, Dimensions> getDimensionsOrder() {
+        return dimensionsOrder;
     }
 
-    public void setFirstDimension(Dimensions firstDimension) {
-        this.firstDimension = firstDimension;
+    public Map<Integer, ShotItems> getShotItemsOrder() {
+        return shotItemsOrder;
     }
 
-    public Dimensions getSecondDimension() {
-        return secondDimension;
+    public boolean isReverse() {
+        return reverse;
     }
 
-    public void setSecondDimension(Dimensions secondDimension) {
-        this.secondDimension = secondDimension;
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
     }
 
-    public Dimensions getThirdDimension() {
-        return thirdDimension;
+    public DimensionsAssociations getDimensionsAssociation() {
+        return dimensionsAssociation;
     }
 
-    public void setThirdDimension(Dimensions thirdDimension) {
-        this.thirdDimension = thirdDimension;
-    }
-
-    public Dimensions getFourthDimension() {
-        return fourthDimension;
-    }
-
-    public void setFourthDimension(Dimensions fourthDimension) {
-        this.fourthDimension = fourthDimension;
+    public void setDimensionsAssociation(DimensionsAssociations dimensionsAssociation) {
+        this.dimensionsAssociation = dimensionsAssociation;
     }
 
     @Override

@@ -19,7 +19,8 @@ package de.r_schuster.parser;
 import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Dimensions;
-import de.r_schuster.data.Fields;
+import de.r_schuster.data.DimensionsAssociations;
+import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
@@ -42,22 +43,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author roger
  */
 public class CompassDatParserTest {
-    
+
     public CompassDatParserTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -67,9 +68,9 @@ public class CompassDatParserTest {
         InputStream is = CompassDatParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
         SurveyParser parser = new CompassDatParser();
         Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
-       
+
         assertEquals("Kleine Scheuer", cave.getName());
-        
+
         assertEquals(1, cave.getSurveys().size());
         Survey survey = cave.getSurveys().get(0);
         assertEquals("Höhle", survey.getCaveName());
@@ -83,8 +84,18 @@ public class CompassDatParserTest {
         assertEquals(LengthUnits.METRES, survey.getLengthUnit());
         assertEquals(LengthUnits.METRES, survey.getDimensionUnit());
         assertEquals(InclinationUnits.DEGREES, survey.getInclinationUnit());
-        assertEquals(Dimensions.LEFT, survey.getFirstDimension());
+        assertEquals(Dimensions.LEFT, survey.getDimensionsOrder().get(1));
+        assertEquals(Dimensions.RIGHT, survey.getDimensionsOrder().get(2));
+        assertEquals(Dimensions.UP, survey.getDimensionsOrder().get(3));
+        assertEquals(Dimensions.DOWN, survey.getDimensionsOrder().get(4));
+        assertEquals(ShotItems.LENGTH, survey.getShotItemsOrder().get(1));
+        assertEquals(ShotItems.INCLINATION, survey.getShotItemsOrder().get(2));
+        assertEquals(ShotItems.AZIMUT, survey.getShotItemsOrder().get(3));
+        assertEquals(ShotItems.REVERSE_INCLINATION, survey.getShotItemsOrder().get(4));
+        assertEquals(ShotItems.REVERSE_AZIMUT, survey.getShotItemsOrder().get(5));
+        assertTrue(survey.isReverse());
+        assertEquals(DimensionsAssociations.FROM, survey.getDimensionsAssociation());
         List<Shot> shots = survey.getShots();
-     //   assertEquals(6, shots.size());
+        //   assertEquals(6, shots.size());
     }
 }

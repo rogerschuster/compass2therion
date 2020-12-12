@@ -44,9 +44,7 @@ public enum AzimutUnits {
         throw new NotSupportedException(uni + " is a not supported azimut unit");
     }
 
-    public char getUnit() {
-        return unit;
-    }
+    
 
     public String getText() {
         return text;

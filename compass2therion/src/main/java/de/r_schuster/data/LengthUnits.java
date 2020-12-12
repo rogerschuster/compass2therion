@@ -42,12 +42,10 @@ public enum LengthUnits {
             }
         }
 
-         throw new NotSupportedException(uni + " is a not supported length unit");
+        throw new NotSupportedException(uni + " is a not supported length unit");
     }
 
-    public char getUnit() {
-        return unit;
-    }
+    
 
     public String getText() {
         return text;

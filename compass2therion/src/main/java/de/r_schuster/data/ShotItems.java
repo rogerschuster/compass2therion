@@ -22,33 +22,27 @@ import de.r_schuster.exceptions.NotSupportedException;
  *
  * @author roger
  */
-public enum InclinationUnits {
-    DEGREES('D', "degrees"),
-    GRADS('R', "grads"),
-    PERCENT('G', "percent");
+public enum ShotItems {
+    LENGTH('L'),
+    AZIMUT('A'),
+    INCLINATION('D'),
+    REVERSE_AZIMUT('a'),
+    REVERSE_INCLINATION('d');
 
-    private final char unit;
-    private final String text;
+    private final char cha;
 
-    private InclinationUnits(char unit, String text) {
-        this.unit = unit;
-        this.text = text;
+    private ShotItems(char cha) {
+        this.cha = cha;
     }
 
-    public static InclinationUnits getByUnit(char uni) {
-        for (InclinationUnits i : values()) {
-            if (i.unit == uni) {
-                return i;
+    public static ShotItems getByType(char type) {
+        for (ShotItems f : values()) {
+            if (f.cha == type) {
+                return f;
             }
         }
 
-        throw new NotSupportedException(uni + " is a not supported inclination unit");
-    }
-
-  
-
-    public String getText() {
-        return text;
+        throw new NotSupportedException(type + " is a not supported shot item");
     }
 
 }

@@ -19,10 +19,11 @@ package de.r_schuster.parser;
 import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Dimensions;
-import de.r_schuster.data.Fields;
+import de.r_schuster.data.DimensionsAssociations;
 import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
+import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
 import java.io.BufferedReader;
 import java.io.File;
@@ -169,7 +170,41 @@ public class CompassDatParser implements SurveyParser {
                     survey.setInclinationUnit(InclinationUnits.getByUnit(charAt));
                     break;
                 case 4:
-                    survey.setFirstDimension(Dimensions.getByType(charAt));
+                    survey.getDimensionsOrder().put(1, Dimensions.getByType(charAt));
+                    break;
+                case 5:
+                    survey.getDimensionsOrder().put(2, Dimensions.getByType(charAt));
+                    break;
+                case 6:
+                    survey.getDimensionsOrder().put(3, Dimensions.getByType(charAt));
+                    break;
+                case 7:
+                    survey.getDimensionsOrder().put(4, Dimensions.getByType(charAt));
+                    break;
+                case 8:
+                    survey.getShotItemsOrder().put(1, ShotItems.getByType(charAt));
+                    break;
+                case 9:
+                    survey.getShotItemsOrder().put(2, ShotItems.getByType(charAt));
+                    break;
+                case 10:
+                    survey.getShotItemsOrder().put(3, ShotItems.getByType(charAt));
+                    break;
+                case 11:
+                    survey.getShotItemsOrder().put(4, ShotItems.getByType(charAt));
+                    break;
+                case 12:
+                    survey.getShotItemsOrder().put(5, ShotItems.getByType(charAt));
+                    break;
+                case 13:
+                    if (charAt == 'B') {
+                        survey.setReverse(true);
+                    } else {
+                        survey.setReverse(false);
+                    }
+                    break;
+                case 14:
+                    survey.setDimensionsAssociation(DimensionsAssociations.getByStation(charAt));
                     break;
                 default:
                     break;
