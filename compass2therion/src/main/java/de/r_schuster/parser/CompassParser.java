@@ -170,8 +170,14 @@ public class CompassParser extends AbstractSurveyParser {
             survey.setDeclination(declination);
         }
 
-        if (idx2 >= 0 && idx3 > idx2) {
-            String str = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
+        String str = null;
+        if (idx2 >= 0 && idx3 == -1) {
+            str = line.substring(idx2 + FORMAT_MATCH.length()).trim();
+        } else if (idx2 >= 0 && idx3 >= 0) {
+            str = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
+        }
+
+        if (str != null) {
             char[] format = str.toCharArray(); // can be 11, 12, 13 or 15 elements
 
             if (format.length < 11 || format.length > 15 || format.length == 14) {

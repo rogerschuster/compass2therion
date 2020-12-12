@@ -107,7 +107,7 @@ public class CompassParserTest {
         Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
 
         assertEquals(3, cave.getSurveys().size());
-        
+
         Survey survey1 = cave.getSurveys().get(0);
         assertEquals(LocalDate.of(1968, 9, 21), survey1.getDate());
         assertEquals(AzimutUnits.DEGREES, survey1.getAzimutUnit());
@@ -122,7 +122,7 @@ public class CompassParserTest {
         assertEquals(ShotItems.AZIMUT, survey1.getShotItemsOrder().get(2));
         assertEquals(ShotItems.INCLINATION, survey1.getShotItemsOrder().get(3));
         assertFalse(survey1.isReverse());
-        
+
         Survey survey2 = cave.getSurveys().get(1);
         assertEquals(LocalDate.of(1996, 9, 28), survey2.getDate());
         assertEquals(AzimutUnits.DEGREES, survey2.getAzimutUnit());
@@ -137,6 +137,21 @@ public class CompassParserTest {
         assertEquals(ShotItems.AZIMUT, survey2.getShotItemsOrder().get(2));
         assertEquals(ShotItems.INCLINATION, survey2.getShotItemsOrder().get(3));
         assertFalse(survey2.isReverse());
+
+        Survey survey3 = cave.getSurveys().get(2);
+        assertEquals(LocalDate.of(1997, 10, 12), survey3.getDate());
+        assertEquals(AzimutUnits.DEGREES, survey3.getAzimutUnit());
+        assertEquals(LengthUnits.FEET_DECIMAL, survey3.getLengthUnit());
+        assertEquals(LengthUnits.FEET_DECIMAL, survey3.getDimensionUnit());
+        assertEquals(InclinationUnits.DEGREES, survey3.getInclinationUnit());
+        assertEquals(Dimensions.LEFT, survey3.getDimensionsOrder().get(1));
+        assertEquals(Dimensions.RIGHT, survey3.getDimensionsOrder().get(2));
+        assertEquals(Dimensions.UP, survey3.getDimensionsOrder().get(3));
+        assertEquals(Dimensions.DOWN, survey3.getDimensionsOrder().get(4));
+        assertEquals(ShotItems.LENGTH, survey3.getShotItemsOrder().get(1));
+        assertEquals(ShotItems.AZIMUT, survey3.getShotItemsOrder().get(2));
+        assertEquals(ShotItems.INCLINATION, survey3.getShotItemsOrder().get(3));
+        assertFalse(survey3.isReverse());
     }
 
     @Test
