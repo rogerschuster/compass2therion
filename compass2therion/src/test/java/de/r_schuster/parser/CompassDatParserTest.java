@@ -18,6 +18,8 @@ package de.r_schuster.parser;
 
 import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.Dimensions;
+import de.r_schuster.data.Fields;
 import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
@@ -81,6 +83,7 @@ public class CompassDatParserTest {
         assertEquals(LengthUnits.METRES, survey.getLengthUnit());
         assertEquals(LengthUnits.METRES, survey.getDimensionUnit());
         assertEquals(InclinationUnits.DEGREES, survey.getInclinationUnit());
+        assertEquals(Dimensions.LEFT, survey.getFirstDimension());
         List<Shot> shots = survey.getShots();
      //   assertEquals(6, shots.size());
     }

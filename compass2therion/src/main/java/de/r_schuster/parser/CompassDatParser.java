@@ -18,6 +18,8 @@ package de.r_schuster.parser;
 
 import de.r_schuster.data.AzimutUnits;
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.Dimensions;
+import de.r_schuster.data.Fields;
 import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
@@ -165,6 +167,9 @@ public class CompassDatParser implements SurveyParser {
                 // inclination unit
                 case 3:
                     survey.setInclinationUnit(InclinationUnits.getByUnit(charAt));
+                    break;
+                case 4:
+                    survey.setFirstDimension(Dimensions.getByType(charAt));
                     break;
                 default:
                     break;

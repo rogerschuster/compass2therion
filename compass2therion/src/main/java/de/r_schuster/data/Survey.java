@@ -32,9 +32,8 @@ import java.util.Set;
 public class Survey implements Serializable {
 
     private final List<Shot> shots = new ArrayList<>();
-    private final Set<String> cavers = new HashSet<>();
+    private final List<String> cavers = new ArrayList<>();
     private final Set<String> stations = new HashSet<>();
-    private final List<Fields> fieldOrder = new ArrayList<>();
 
     private String caveName;
     private String name;
@@ -45,12 +44,16 @@ public class Survey implements Serializable {
     private AzimutUnits azimutUnit;
     private LengthUnits lengthUnit;
     private LengthUnits dimensionUnit;
+    private Dimensions firstDimension;
+    private Dimensions secondDimension;
+    private Dimensions thirdDimension;
+    private Dimensions fourthDimension;
 
     public void addCaver(String caver) {
         cavers.add(caver);
     }
 
-    public Set<String> getCavers() {
+    public List<String> getCavers() {
         return cavers;
     }
 
@@ -68,14 +71,6 @@ public class Survey implements Serializable {
 
     public Set<String> getStations() {
         return stations;
-    }
-
-    public void addField(Fields field) {
-        fieldOrder.add(field);
-    }
-
-    public List<Fields> getFieldOrder() {
-        return fieldOrder;
     }
 
     public String getCaveName() {
@@ -148,6 +143,38 @@ public class Survey implements Serializable {
 
     public void setDimensionUnit(LengthUnits dimensionUnit) {
         this.dimensionUnit = dimensionUnit;
+    }
+
+    public Dimensions getFirstDimension() {
+        return firstDimension;
+    }
+
+    public void setFirstDimension(Dimensions firstDimension) {
+        this.firstDimension = firstDimension;
+    }
+
+    public Dimensions getSecondDimension() {
+        return secondDimension;
+    }
+
+    public void setSecondDimension(Dimensions secondDimension) {
+        this.secondDimension = secondDimension;
+    }
+
+    public Dimensions getThirdDimension() {
+        return thirdDimension;
+    }
+
+    public void setThirdDimension(Dimensions thirdDimension) {
+        this.thirdDimension = thirdDimension;
+    }
+
+    public Dimensions getFourthDimension() {
+        return fourthDimension;
+    }
+
+    public void setFourthDimension(Dimensions fourthDimension) {
+        this.fourthDimension = fourthDimension;
     }
 
     @Override
