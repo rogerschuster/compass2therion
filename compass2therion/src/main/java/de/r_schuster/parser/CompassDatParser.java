@@ -37,7 +37,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
 /**
@@ -131,7 +130,7 @@ public class CompassDatParser implements SurveyParser {
         DateTimeFormatter parser = new DateTimeFormatterBuilder()
                 .appendPattern("M d ")
                 .appendValueReduced(ChronoField.YEAR, 2, 4, 1900)
-                .toFormatter(Locale.forLanguageTag("de-DE"));
+                .toFormatter(Locale.forLanguageTag("en-US"));
 
         LocalDate date = LocalDate.parse(dateString, parser);
         survey.setDate(date);
