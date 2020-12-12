@@ -16,12 +16,41 @@
  */
 package de.r_schuster.data;
 
+import de.r_schuster.exceptions.NotSupportedException;
+
 /**
  *
  * @author roger
  */
 public enum InclinationUnits {
-    DEGREES,
-    GRADS,
-    PERCENT
+    DEGREES('D', "degrees"),
+    GRADS('R', "grads"),
+    PERCENT('G', "percent");
+
+    private final char unit;
+    private final String text;
+
+    private InclinationUnits(char unit, String text) {
+        this.unit = unit;
+        this.text = text;
+    }
+
+    public static InclinationUnits getByUnit(char uni) {
+        for (InclinationUnits i : values()) {
+            if (i.unit == uni) {
+                return i;
+            }
+        }
+
+        throw new NotSupportedException(uni + " is a not supported inclination unit");
+    }
+
+    public char getUnit() {
+        return unit;
+    }
+
+    public String getText() {
+        return text;
+    }
+
 }

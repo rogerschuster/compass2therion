@@ -23,6 +23,7 @@ package de.r_schuster.exceptions;
 public class NotSupportedException extends RuntimeException {
 
     public NotSupportedException() {
+        super();
     }
 
     public NotSupportedException(String message) {

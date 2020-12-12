@@ -41,8 +41,8 @@ public class Survey implements Serializable {
     private String comment;
     private LocalDate date;
     private BigDecimal declination;
-    private InclinationUnits inclinationUnits;
-    private AzimutUnits azimutUnits;
+    private InclinationUnits inclinationUnit;
+    private AzimutUnits azimutUnit;
     private LengthUnits lengthUnit;
     private LengthUnits dimensionUnit;
 
@@ -118,20 +118,20 @@ public class Survey implements Serializable {
         this.declination = declination;
     }
 
-    public InclinationUnits getInclinationUnits() {
-        return inclinationUnits;
+    public InclinationUnits getInclinationUnit() {
+        return inclinationUnit;
     }
 
-    public void setInclinationUnits(InclinationUnits inclinationUnits) {
-        this.inclinationUnits = inclinationUnits;
+    public void setInclinationUnit(InclinationUnits inclinationUnits) {
+        this.inclinationUnit = inclinationUnits;
     }
 
-    public AzimutUnits getAzimutUnits() {
-        return azimutUnits;
+    public AzimutUnits getAzimutUnit() {
+        return azimutUnit;
     }
 
-    public void setAzimutUnits(AzimutUnits azimutUnits) {
-        this.azimutUnits = azimutUnits;
+    public void setAzimutUnit(AzimutUnits azimutUnits) {
+        this.azimutUnit = azimutUnits;
     }
 
     public LengthUnits getLengthUnit() {

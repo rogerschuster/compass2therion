@@ -16,30 +16,40 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.UnknownException;
+import de.r_schuster.exceptions.NotSupportedException;
 
 /**
  *
  * @author roger
  */
 public enum AzimutUnits {
-    DEGREES('D'),
-    GRADS('R'),
-    QUADS('Q');
+    DEGREES('D', "degrees"),
+    GRADS('R', "grads");
 
     private final char unit;
+    private final String text;
 
-    private AzimutUnits(char unit) {
+    private AzimutUnits(char unit, String text) {
         this.unit = unit;
+        this.text = text;
     }
 
-    public AzimutUnits getByUnit(char uni) {
+    public static AzimutUnits getByUnit(char uni) {
         AzimutUnits[] values = AzimutUnits.values();
         for (AzimutUnits a : values) {
             if (a.unit == uni) {
                 return a;
             }
         }
-        throw new UnknownException(uni + " is an unknown azimut unit");
+        throw new NotSupportedException(uni + " is a not supported azimut unit");
     }
+
+    public char getUnit() {
+        return unit;
+    }
+
+    public String getText() {
+        return text;
+    }
+
 }

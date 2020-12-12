@@ -1,0 +1,37 @@
+TESTCAVE
+SURVEY NAME: SV1
+SURVEY DATE:   9 21 68
+SURVEY TEAM: 
+J. Doe
+DECLINATION:    0.80
+
+  FROM   TO   LENGTH  BEARING     DIP      LEFT      UP      DOWN     RIGHT
+
+ A1  A2    52.00   265.00    -8.50     6.00     0.00     0.00     6.00
+ A2  A3    23.00   261.00    -2.00     3.00     0.00     0.00     3.00
+
+TESTCAVE
+SURVEY NAME: SV2
+SURVEY DATE: 9 28 96
+SURVEY TEAM: 
+J. Doe, J. Wayne
+DECLINATION:   11.76  FORMAT: DDDDLRUDLAD
+
+    FROM       TO   LENGTH  BEARING     DIP      LEFT      UP      DOWN     RIGHT
+
+    A3       B1     7.60   263.50   -24.50     3.00     3.00     0.00     3.00
+    B1       B2    13.10   303.50     2.00     0.00     8.00    12.00     4.00
+
+TESTCAVE
+SURVEY NAME: SV3
+SURVEY DATE: 10 12 1997  COMMENT:I need a beer
+SURVEY TEAM: 
+O.M. Gee, C. Crawler
+DECLINATION:   11.86  FORMAT: DDDDLRUDLADN  CORRECTIONS:  0.00 0.00 0.00
+
+      FROM         TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+       B2        C1    27.40   264.50   -22.00    20.00    40.00     6.00    30.00
+       C1        C2    17.60    33.00   -15.50    10.00    10.00     0.00    -9.90  changed az from 186.5 to 6.5 per P.F. & S.Ml
+
+

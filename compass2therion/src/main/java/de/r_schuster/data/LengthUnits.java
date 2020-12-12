@@ -16,24 +16,25 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.UnknownException;
+import de.r_schuster.exceptions.NotSupportedException;
 
 /**
  *
  * @author roger
  */
 public enum LengthUnits {
-    METRES('M'),
-    FEET_DECIMAL('D'),
-    FEET_INCHES('I');
+    METRES('M', "metres"),
+    FEET_DECIMAL('D', "feet");
 
     private final char unit;
+    private final String text;
 
-    private LengthUnits(char unit) {
+    private LengthUnits(char unit, String text) {
         this.unit = unit;
+        this.text = text;
     }
 
-    public LengthUnits getByUnit(char uni) {
+    public static LengthUnits getByUnit(char uni) {
         LengthUnits[] values = LengthUnits.values();
         for (LengthUnits l : values) {
             if (l.unit == uni) {
@@ -41,6 +42,15 @@ public enum LengthUnits {
             }
         }
 
-        throw new UnknownException(uni + " is an unknown length unit");
+         throw new NotSupportedException(uni + " is a not supported length unit");
     }
+
+    public char getUnit() {
+        return unit;
+    }
+
+    public String getText() {
+        return text;
+    }
+
 }
