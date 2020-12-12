@@ -25,6 +25,7 @@ import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
+import de.r_schuster.exceptions.SurveyException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,39 +75,46 @@ public class CompassParser extends AbstractSurveyParser {
 
         String line = reader.readLine();
         int lno = 1;
-        while (line != null) {
-            // the first line of a survey contains the cave name
-            if (lno == 1) {
-                survey.setCaveName(line.trim());
-            } // second line: survey name
-            else if (lno == 2) {
-                parseSurveyName(survey, line);
-            } // third line: Survey date and comment
-            else if (lno == 3) {
-                parseSurveyDateAndComment(survey, line);
-            } // fourth line: nothing
-            // fifth line: survey team
-            else if (lno == 5) {
-                parseCavers(survey, line);
-            } // sixth line: Declination, format, corrections
-            else if (lno == 6) {
-                parseDeclinationAndFormat(survey, line);
-            } // 10ff lines: Survey data
-            else if (lno >= 10 && !FORM_FEED.equals(line) && !SUB.equals(line)) {
-                Shot shot = new Shot();
-                // TODO
-                survey.addShot(shot);
-            }
+        int pos = 0;
 
-            // End of current survey
-            if (FORM_FEED.equals(line)) {
-                cave.addSurvey(survey);
-                survey = new Survey();
-                lno = 0;
-            }
+        try {
+            while (line != null) {
+                pos++;
+                // the first line of a survey contains the cave name
+                if (lno == 1) {
+                    survey.setCaveName(line.trim());
+                } // second line: survey name
+                else if (lno == 2) {
+                    parseSurveyName(survey, line);
+                } // third line: Survey date and comment
+                else if (lno == 3) {
+                    parseSurveyDateAndComment(survey, line);
+                } // fourth line: nothing
+                // fifth line: survey team
+                else if (lno == 5) {
+                    parseCavers(survey, line);
+                } // sixth line: Declination, format, corrections
+                else if (lno == 6) {
+                    parseDeclinationAndFormat(survey, line);
+                } // 10ff lines: Survey data
+                else if (lno >= 10 && !FORM_FEED.equals(line) && !SUB.equals(line)) {
+                    Shot shot = new Shot();
+                    // TODO
+                    survey.addShot(shot);
+                }
 
-            lno++;
-            line = reader.readLine();
+                // End of current survey
+                if (FORM_FEED.equals(line)) {
+                    cave.addSurvey(survey);
+                    survey = new Survey();
+                    lno = 0;
+                }
+
+                lno++;
+                line = reader.readLine();
+            }
+        } catch (SurveyException e) {
+            throw new SurveyException("Error while reading line " + pos + " of survey file!", e);
         }
 
         return cave;
@@ -150,72 +158,83 @@ public class CompassParser extends AbstractSurveyParser {
         final int idx2 = line.indexOf(FORMAT_MATCH);
         final int idx3 = line.indexOf(CORRECTIONS_MATCH);
 
-        String decliString = line.substring(idx1 + DECLINATION_MATCH.length(), idx2).trim();
+        String decliString;
+        if (idx2 == -1 && idx3 == -1) {
+            decliString = line.substring(idx1 + DECLINATION_MATCH.length()).trim();
+        } else {
+            decliString = line.substring(idx1 + DECLINATION_MATCH.length(), idx2).trim();
+        }
+
         if (!"".equals(decliString) && !"0.00".equals(decliString)) {
             BigDecimal declination = new BigDecimal(decliString);
             survey.setDeclination(declination);
         }
 
-        String format = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
-        for (int i = 0; i < format.length(); i++) {
-            char charAt = format.charAt(i);
-            switch (i) {
-                // Azimut Unit
-                case 0:
-                    survey.setAzimutUnit(AzimutUnits.getByUnit(charAt));
-                    break;
-                // length unit
-                case 1:
-                    survey.setLengthUnit(LengthUnits.getByUnit(charAt));
-                    break;
-                // dimension unit
-                case 2:
-                    survey.setDimensionUnit(LengthUnits.getByUnit(charAt));
-                    break;
-                // inclination unit
-                case 3:
-                    survey.setInclinationUnit(InclinationUnits.getByUnit(charAt));
-                    break;
-                case 4:
-                    survey.getDimensionsOrder().put(1, Dimensions.getByType(charAt));
-                    break;
-                case 5:
-                    survey.getDimensionsOrder().put(2, Dimensions.getByType(charAt));
-                    break;
-                case 6:
-                    survey.getDimensionsOrder().put(3, Dimensions.getByType(charAt));
-                    break;
-                case 7:
-                    survey.getDimensionsOrder().put(4, Dimensions.getByType(charAt));
-                    break;
-                case 8:
-                    survey.getShotItemsOrder().put(1, ShotItems.getByType(charAt));
-                    break;
-                case 9:
-                    survey.getShotItemsOrder().put(2, ShotItems.getByType(charAt));
-                    break;
-                case 10:
-                    survey.getShotItemsOrder().put(3, ShotItems.getByType(charAt));
-                    break;
-                case 11:
-                    survey.getShotItemsOrder().put(4, ShotItems.getByType(charAt));
-                    break;
-                case 12:
-                    survey.getShotItemsOrder().put(5, ShotItems.getByType(charAt));
-                    break;
-                case 13:
-                    if (charAt == 'B') {
-                        survey.setReverse(true);
-                    } else {
-                        survey.setReverse(false);
-                    }
-                    break;
-                case 14:
-                    survey.setDimensionsAssociation(DimensionsAssociations.getByStation(charAt));
-                    break;
-                default:
-                    break;
+        if (idx2 >= 0 && idx3 > idx2) {
+            String format = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
+            int length = format.length(); // can be 11, 12, 13 or 15
+            for (int i = 0; i < format.length(); i++) {
+                char charAt = format.charAt(i);
+                switch (i) {
+                    // Azimut Unit
+                    case 0:
+                        survey.setAzimutUnit(AzimutUnits.getByUnit(charAt));
+                        break;
+                    // length unit
+                    case 1:
+                        survey.setLengthUnit(LengthUnits.getByUnit(charAt));
+                        break;
+                    // dimension unit
+                    case 2:
+                        survey.setDimensionUnit(LengthUnits.getByUnit(charAt));
+                        break;
+                    // inclination unit
+                    case 3:
+                        survey.setInclinationUnit(InclinationUnits.getByUnit(charAt));
+                        break;
+                    case 4:
+                        survey.getDimensionsOrder().put(1, Dimensions.getByType(charAt));
+                        break;
+                    case 5:
+                        survey.getDimensionsOrder().put(2, Dimensions.getByType(charAt));
+                        break;
+                    case 6:
+                        survey.getDimensionsOrder().put(3, Dimensions.getByType(charAt));
+                        break;
+                    case 7:
+                        survey.getDimensionsOrder().put(4, Dimensions.getByType(charAt));
+                        break;
+                    case 8:
+                        survey.getShotItemsOrder().put(1, ShotItems.getByType(charAt));
+                        break;
+                    case 9:
+                        survey.getShotItemsOrder().put(2, ShotItems.getByType(charAt));
+                        break;
+                    case 10:
+                        survey.getShotItemsOrder().put(3, ShotItems.getByType(charAt));
+                        break;
+                    case 11:
+                        survey.getShotItemsOrder().put(4, ShotItems.getByType(charAt));
+                        break;
+                    case 12:
+                        survey.getShotItemsOrder().put(5, ShotItems.getByType(charAt));
+                        break;
+                    case 13:
+                        if (charAt == 'B') {
+                            survey.setReverse(true);
+                        } else {
+                            survey.setReverse(false);
+                        }
+                        break;
+                    case 14:
+                        survey.setDimensionsAssociation(DimensionsAssociations.getByStation(charAt));
+                        break;
+                    default:
+                        break;
+                }
             }
+        } else {
+            // TODO default
         }
 
         // TODO Corrections and Corrections2

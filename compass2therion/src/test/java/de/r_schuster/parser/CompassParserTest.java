@@ -25,6 +25,7 @@ import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
+import de.r_schuster.exceptions.SurveyException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -98,14 +99,26 @@ public class CompassParserTest {
         List<Shot> shots = survey.getShots();
         //   assertEquals(6, shots.size());
     }
-    
+
     @Test
     public void compatibility() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/compatibility.dat");
         SurveyParser parser = new CompassParser();
         Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
-        
+
         Survey survey1 = cave.getSurveys().get(0);
         assertEquals(LocalDate.of(1968, 9, 21), survey1.getDate());
+    }
+
+    @Test
+    public void invalid() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/invalid.dat");
+        SurveyParser parser = new CompassParser();
+        try {
+            Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
+            fail("Needs to throw an exception");
+        } catch (SurveyException e) {
+            assertTrue(e.getMessage().contains("Error while reading line 6"));
+        }
     }
 }

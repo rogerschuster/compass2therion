@@ -16,7 +16,7 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.NotSupportedException;
+import de.r_schuster.exceptions.SurveyException;
 
 /**
  *
@@ -42,10 +42,8 @@ public enum InclinationUnits {
             }
         }
 
-        throw new NotSupportedException(uni + " is a not supported inclination unit");
+        throw new SurveyException(uni + " is a not supported inclination unit");
     }
-
-  
 
     public String getText() {
         return text;

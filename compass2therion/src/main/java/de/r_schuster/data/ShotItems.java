@@ -16,7 +16,7 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.NotSupportedException;
+import de.r_schuster.exceptions.SurveyException;
 
 /**
  *
@@ -42,7 +42,7 @@ public enum ShotItems {
             }
         }
 
-        throw new NotSupportedException(type + " is a not supported shot item");
+        throw new SurveyException(type + " is a not supported shot item");
     }
 
 }

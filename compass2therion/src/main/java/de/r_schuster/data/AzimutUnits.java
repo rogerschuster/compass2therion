@@ -16,7 +16,7 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.NotSupportedException;
+import de.r_schuster.exceptions.SurveyException;
 
 /**
  *
@@ -41,10 +41,8 @@ public enum AzimutUnits {
                 return a;
             }
         }
-        throw new NotSupportedException(uni + " is a not supported azimut unit");
+        throw new SurveyException(uni + " is a not supported azimut unit");
     }
-
-    
 
     public String getText() {
         return text;

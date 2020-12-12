@@ -16,7 +16,7 @@
  */
 package de.r_schuster.data;
 
-import de.r_schuster.exceptions.NotSupportedException;
+import de.r_schuster.exceptions.SurveyException;
 
 /**
  *
@@ -39,6 +39,6 @@ public enum DimensionsAssociations {
             }
         }
 
-        throw new NotSupportedException(stat + " is not supported");
+        throw new SurveyException(stat + " is not supported");
     }
 }

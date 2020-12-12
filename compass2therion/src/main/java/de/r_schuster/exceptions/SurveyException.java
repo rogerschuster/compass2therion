@@ -20,14 +20,14 @@ package de.r_schuster.exceptions;
  *
  * @author roger
  */
-public class NotSupportedException extends RuntimeException {
+public class SurveyException extends RuntimeException {
 
-    public NotSupportedException() {
-        super();
-    }
-
-    public NotSupportedException(String message) {
+    public SurveyException(String message) {
         super(message);
     }
-    
+
+    public SurveyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }
