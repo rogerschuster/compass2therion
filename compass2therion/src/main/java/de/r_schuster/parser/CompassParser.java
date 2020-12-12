@@ -171,70 +171,60 @@ public class CompassParser extends AbstractSurveyParser {
         }
 
         if (idx2 >= 0 && idx3 > idx2) {
-            String format = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
-            int length = format.length(); // can be 11, 12, 13 or 15
-            for (int i = 0; i < format.length(); i++) {
-                char charAt = format.charAt(i);
-                switch (i) {
-                    // Azimut Unit
-                    case 0:
-                        survey.setAzimutUnit(AzimutUnits.getByUnit(charAt));
-                        break;
-                    // length unit
-                    case 1:
-                        survey.setLengthUnit(LengthUnits.getByUnit(charAt));
-                        break;
-                    // dimension unit
-                    case 2:
-                        survey.setDimensionUnit(LengthUnits.getByUnit(charAt));
-                        break;
-                    // inclination unit
-                    case 3:
-                        survey.setInclinationUnit(InclinationUnits.getByUnit(charAt));
-                        break;
-                    case 4:
-                        survey.getDimensionsOrder().put(1, Dimensions.getByType(charAt));
-                        break;
-                    case 5:
-                        survey.getDimensionsOrder().put(2, Dimensions.getByType(charAt));
-                        break;
-                    case 6:
-                        survey.getDimensionsOrder().put(3, Dimensions.getByType(charAt));
-                        break;
-                    case 7:
-                        survey.getDimensionsOrder().put(4, Dimensions.getByType(charAt));
-                        break;
-                    case 8:
-                        survey.getShotItemsOrder().put(1, ShotItems.getByType(charAt));
-                        break;
-                    case 9:
-                        survey.getShotItemsOrder().put(2, ShotItems.getByType(charAt));
-                        break;
-                    case 10:
-                        survey.getShotItemsOrder().put(3, ShotItems.getByType(charAt));
-                        break;
-                    case 11:
-                        survey.getShotItemsOrder().put(4, ShotItems.getByType(charAt));
-                        break;
-                    case 12:
-                        survey.getShotItemsOrder().put(5, ShotItems.getByType(charAt));
-                        break;
-                    case 13:
-                        if (charAt == 'B') {
-                            survey.setReverse(true);
-                        } else {
-                            survey.setReverse(false);
-                        }
-                        break;
-                    case 14:
-                        survey.setDimensionsAssociation(DimensionsAssociations.getByStation(charAt));
-                        break;
-                    default:
-                        break;
+            String str = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
+            char[] format = str.toCharArray(); // can be 11, 12, 13 or 15 elements
+
+            if (format.length < 11 || format.length > 15 || format.length == 14) {
+                throw new SurveyException("Format string invalid: " + str);
+            }
+
+            survey.setAzimutUnit(AzimutUnits.getByUnit(format[0])); // Azimut Unit
+            survey.setLengthUnit(LengthUnits.getByUnit(format[1])); // length unit
+            survey.setDimensionUnit(LengthUnits.getByUnit(format[2])); // dimension unit
+            survey.setInclinationUnit(InclinationUnits.getByUnit(format[3])); // inclination unit
+            survey.getDimensionsOrder().put(1, Dimensions.getByType(format[4])); // first passage dimension
+            survey.getDimensionsOrder().put(2, Dimensions.getByType(format[5])); // second passage dimension
+            survey.getDimensionsOrder().put(3, Dimensions.getByType(format[6])); // third passage dimension
+            survey.getDimensionsOrder().put(4, Dimensions.getByType(format[7])); // fourth passage dimension
+            survey.getShotItemsOrder().put(1, ShotItems.getByType(format[8])); // first shot item (length, azimut...)
+            survey.getShotItemsOrder().put(2, ShotItems.getByType(format[9])); // second shot item (length, azimut...)
+            survey.getShotItemsOrder().put(3, ShotItems.getByType(format[10])); // third shot item (length, azimut...)
+
+            if (format.length == 12 || format.length == 13) {
+                if (format[11] == 'B') {
+                    survey.setReverse(true);
+                } else {
+                    survey.setReverse(false);
                 }
             }
+            if (format.length == 13) {
+                survey.setDimensionsAssociation(DimensionsAssociations.getByStation(format[12]));
+            }
+            if (format.length == 15) {
+                survey.getShotItemsOrder().put(4, ShotItems.getByType(format[11])); // fourth shot item (length, azimut...)
+                survey.getShotItemsOrder().put(5, ShotItems.getByType(format[12])); // fifth shot item (length, azimut...)
+                if (format[13] == 'B') {
+                    survey.setReverse(true);
+                } else {
+                    survey.setReverse(false);
+                }
+                survey.setDimensionsAssociation(DimensionsAssociations.getByStation(format[14]));
+            }
+
         } else {
-            // TODO default
+            survey.setAzimutUnit(AzimutUnits.DEGREES); // Azimut Unit
+            survey.setLengthUnit(LengthUnits.FEET_DECIMAL); // length unit
+            survey.setDimensionUnit(LengthUnits.FEET_DECIMAL); // dimension unit
+            survey.setInclinationUnit(InclinationUnits.DEGREES); // inclination unit
+            survey.getDimensionsOrder().put(1, Dimensions.LEFT); // first passage dimension
+            survey.getDimensionsOrder().put(2, Dimensions.UP); // second passage dimension
+            survey.getDimensionsOrder().put(3, Dimensions.DOWN); // third passage dimension
+            survey.getDimensionsOrder().put(4, Dimensions.RIGHT); // fourth passage dimension
+            survey.getShotItemsOrder().put(1, ShotItems.LENGTH); // first shot item (length, azimut...)
+            survey.getShotItemsOrder().put(2, ShotItems.AZIMUT); // second shot item (length, azimut...)
+            survey.getShotItemsOrder().put(3, ShotItems.INCLINATION); // third shot item (length, azimut...)
+            survey.setDimensionsAssociation(DimensionsAssociations.FROM);
+            survey.setReverse(false);
         }
 
         // TODO Corrections and Corrections2
