@@ -43,10 +43,20 @@ import java.util.Locale;
  *
  * @author roger
  */
-public class CompassDatParser implements SurveyParser {
+public class CompassParser extends AbstractSurveyParser {
 
     private static final String FORM_FEED = "\u000C";
     private static final String SUB = "\u001A";
+    private static final DateTimeFormatter SURVEY_DATE_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern("M d ")
+            .appendValueReduced(ChronoField.YEAR, 2, 4, 1900)
+            .toFormatter(Locale.forLanguageTag("en-US"));
+    private static final String SURVEY_NAME_MATCH = "SURVEY NAME:";
+    private static final String SURVEY_DATE_MATCH = "SURVEY DATE:";
+    private static final String SURVEY_COMMENT_MATCH = "COMMENT:"; // comment is optional in COMPASS
+    private static final String DECLINATION_MATCH = "DECLINATION:";
+    private static final String FORMAT_MATCH = "FORMAT:"; // optional in Compass
+    private static final String CORRECTIONS_MATCH = "CORRECTIONS:"; // optional in Compass
 
     @Override
     public Cave parse(String caveName, File file, Charset charset) throws IOException {
@@ -103,36 +113,28 @@ public class CompassDatParser implements SurveyParser {
     }
 
     private void parseSurveyName(final Survey survey, final String line) {
-        final String nameMatch = "SURVEY NAME:";
-        int indexOf = line.indexOf(nameMatch);
-        String name = line.substring(indexOf + nameMatch.length());
+        final int indexOf = line.indexOf(SURVEY_NAME_MATCH);
+        String name = line.substring(indexOf + SURVEY_NAME_MATCH.length());
         name = name.trim();
         survey.setName(name);
     }
 
     private void parseSurveyDateAndComment(final Survey survey, final String line) {
-        final String dateMatch = "SURVEY DATE:";
-        final String commentMatch = "COMMENT:"; // comment is optional in COMPASS
-        final int idx1 = line.indexOf(dateMatch);
-        final int idx2 = line.indexOf(commentMatch);
+        final int idx1 = line.indexOf(SURVEY_DATE_MATCH);
+        final int idx2 = line.indexOf(SURVEY_COMMENT_MATCH);
 
         String dateString;
 
         if (idx2 == -1) {
-            dateString = line.substring(idx1 + dateMatch.length()).trim();
+            dateString = line.substring(idx1 + SURVEY_DATE_MATCH.length()).trim();
         } else {
-            dateString = line.substring(idx1 + dateMatch.length(), idx2).trim();
+            dateString = line.substring(idx1 + SURVEY_DATE_MATCH.length(), idx2).trim();
 
-            String comment = line.substring(idx2 + commentMatch.length()).trim();
+            String comment = line.substring(idx2 + SURVEY_COMMENT_MATCH.length()).trim();
             survey.setComment(comment);
         }
 
-        DateTimeFormatter parser = new DateTimeFormatterBuilder()
-                .appendPattern("M d ")
-                .appendValueReduced(ChronoField.YEAR, 2, 4, 1900)
-                .toFormatter(Locale.forLanguageTag("en-US"));
-
-        LocalDate date = LocalDate.parse(dateString, parser);
+        LocalDate date = LocalDate.parse(dateString, SURVEY_DATE_FORMATTER);
         survey.setDate(date);
     }
 
@@ -144,20 +146,17 @@ public class CompassDatParser implements SurveyParser {
     }
 
     private void parseDeclinationAndFormat(final Survey survey, final String line) {
-        final String decliMatch = "DECLINATION:";
-        final String formatMatch = "FORMAT:"; // optional in Compass
-        final String correctionMatch1 = "CORRECTIONS:"; // optional in Compass
-        final int idx1 = line.indexOf(decliMatch);
-        final int idx2 = line.indexOf(formatMatch);
-        final int idx3 = line.indexOf(correctionMatch1);
+        final int idx1 = line.indexOf(DECLINATION_MATCH);
+        final int idx2 = line.indexOf(FORMAT_MATCH);
+        final int idx3 = line.indexOf(CORRECTIONS_MATCH);
 
-        String decliString = line.substring(idx1 + decliMatch.length(), idx2).trim();
+        String decliString = line.substring(idx1 + DECLINATION_MATCH.length(), idx2).trim();
         if (!"".equals(decliString) && !"0.00".equals(decliString)) {
             BigDecimal declination = new BigDecimal(decliString);
             survey.setDeclination(declination);
         }
 
-        String format = line.substring(idx2 + formatMatch.length(), idx3).trim();
+        String format = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
         for (int i = 0; i < format.length(); i++) {
             char charAt = format.charAt(i);
             switch (i) {

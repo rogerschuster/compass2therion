@@ -42,9 +42,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author roger
  */
-public class CompassDatParserTest {
+public class CompassParserTest {
 
-    public CompassDatParserTest() {
+    public CompassParserTest() {
     }
 
     @BeforeAll
@@ -65,8 +65,8 @@ public class CompassDatParserTest {
 
     @Test
     public void simpleSurvey() throws IOException {
-        InputStream is = CompassDatParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
-        SurveyParser parser = new CompassDatParser();
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
+        SurveyParser parser = new CompassParser();
         Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
 
         assertEquals("Kleine Scheuer", cave.getName());
@@ -101,8 +101,8 @@ public class CompassDatParserTest {
     
     @Test
     public void compatibility() throws IOException {
-        InputStream is = CompassDatParserTest.class.getResourceAsStream("/parser/compatibility.dat");
-        SurveyParser parser = new CompassDatParser();
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/compatibility.dat");
+        SurveyParser parser = new CompassParser();
         Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
         
         Survey survey1 = cave.getSurveys().get(0);
