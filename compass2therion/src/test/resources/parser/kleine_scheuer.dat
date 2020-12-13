@@ -14,4 +14,18 @@ DECLINATION:    3.20  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  COR
                    4                    5    21.46    39.00     2.00     8.99     3.81     5.12     0.66   218.00    -2.00
                    5                   5'     0.00     0.00     0.00     2.62     0.33     0.98     1.64   180.00     0.00
 
+Höhle
+SURVEY NAME: 10.2
+SURVEY DATE: 12 13 2020  COMMENT:Just a test
+SURVEY TEAM: 
+Häberle, Eisele
+DECLINATION:   -1.00  FORMAT: DMMDUDLRALDdaNT  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                   5                  2.1    41.21    10.00     5.00    22.97    29.53    26.25    19.69  #|L#  test test 
+                 2.1                  2.2    12.47    25.00    -7.00     9.84    26.25    13.12     3.28  blah blah
+                 2.2                  2.3    25.89    45.00    12.00     1.31     3.28     0.98     3.28  #|L#
+                 2.3                  2.4    31.33    35.00    56.00    20.08     6.92    18.57     0.33
+
 

@@ -32,10 +32,6 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,21 +44,7 @@ public class CompassParserTest {
     public CompassParserTest() {
     }
 
-    @BeforeAll
-    public static void setUpClass() {
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-    }
-
-    @BeforeEach
-    public void setUp() {
-    }
-
-    @AfterEach
-    public void tearDown() {
-    }
+   
 
     @Test
     public void simpleSurvey() throws IOException {
@@ -72,7 +54,7 @@ public class CompassParserTest {
 
         assertEquals("Kleine Scheuer", cave.getName());
 
-        assertEquals(1, cave.getSurveys().size());
+        assertEquals(2, cave.getSurveys().size());
         Survey survey = cave.getSurveys().get(0);
         assertEquals("Höhle", survey.getCaveName());
         assertEquals("10.1", survey.getName());
