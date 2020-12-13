@@ -98,9 +98,7 @@ public class CompassParser extends AbstractSurveyParser {
                     parseDeclinationAndFormat(survey, line);
                 } // 10ff lines: Survey data
                 else if (lno >= 10 && !FORM_FEED.equals(line) && !SUB.equals(line)) {
-                    Shot shot = new Shot();
-                    // TODO
-                    survey.addShot(shot);
+                    parseShot(survey, line);
                 }
 
                 // End of current survey
@@ -234,5 +232,11 @@ public class CompassParser extends AbstractSurveyParser {
         }
 
         // TODO Corrections and Corrections2
+    }
+
+    private void parseShot(final Survey survey, final String line) {
+        Shot shot = new Shot();
+        // TODO
+        survey.addShot(shot);
     }
 }

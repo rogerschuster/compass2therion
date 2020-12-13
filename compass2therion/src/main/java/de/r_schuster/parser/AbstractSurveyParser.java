@@ -30,7 +30,7 @@ public abstract class AbstractSurveyParser implements SurveyParser {
     private static final BigDecimal TO_METRES = BigDecimal.valueOf(0.3048);
 
     protected BigDecimal degreeToGradians(BigDecimal degree) {
-        return degree.setScale(2, RoundingMode.HALF_UP).multiply(TO_GRADIANS).setScale(2, RoundingMode.HALF_UP);
+        return degree.multiply(TO_GRADIANS).setScale(2, RoundingMode.HALF_UP);
     }
 
     protected BigDecimal degreeToPercent(BigDecimal degree) {
