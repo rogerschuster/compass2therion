@@ -206,8 +206,23 @@ public class CompassParser extends AbstractSurveyParser {
             }
 
             survey.setAzimutUnit(AzimutUnits.getByUnit(format[0])); // Azimut Unit
-            survey.setLengthUnit(LengthUnits.getByUnit(format[1])); // length unit
-            survey.setDimensionUnit(LengthUnits.getByUnit(format[2])); // dimension unit
+
+            LengthUnits lenUn;
+            if (LengthUnits.getByUnit(format[1]).equals(LengthUnits.FEET_INCHES)) {
+                lenUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
+            } else {
+                lenUn = LengthUnits.getByUnit(format[1]);
+            }
+            survey.setLengthUnit(lenUn); // length unit
+
+            LengthUnits dimUn;
+            if (LengthUnits.getByUnit(format[2]).equals(LengthUnits.FEET_INCHES)) {
+                dimUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
+            } else {
+                dimUn = LengthUnits.getByUnit(format[2]);
+            }
+            survey.setDimensionUnit(dimUn); // dimension unit
+
             survey.setInclinationUnit(InclinationUnits.getByUnit(format[3])); // inclination unit
             survey.getDimensionsOrder().put(1, Dimensions.getByType(format[4])); // first passage dimension
             survey.getDimensionsOrder().put(2, Dimensions.getByType(format[5])); // second passage dimension

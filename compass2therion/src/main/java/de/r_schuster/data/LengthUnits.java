@@ -24,7 +24,8 @@ import de.r_schuster.exceptions.SurveyException;
  */
 public enum LengthUnits {
     METRES('M', "metres"),
-    FEET_DECIMAL('D', "feet");
+    FEET_DECIMAL('D', "feet"),
+    FEET_INCHES('I', "inches");
 
     private final char unit;
     private final String text;
