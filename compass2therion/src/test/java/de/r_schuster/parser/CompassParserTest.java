@@ -44,8 +44,6 @@ public class CompassParserTest {
     public CompassParserTest() {
     }
 
-   
-
     @Test
     public void simpleSurvey() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
@@ -55,31 +53,31 @@ public class CompassParserTest {
         assertEquals("Kleine Scheuer", cave.getName());
 
         assertEquals(2, cave.getSurveys().size());
-        Survey survey = cave.getSurveys().get(0);
-        assertEquals("Höhle", survey.getCaveName());
-        assertEquals("10.1", survey.getName());
-        assertEquals(LocalDate.of(2020, 6, 14), survey.getDate());
-        assertEquals("Katasternummer 7225/10", survey.getComment());
-        assertTrue(survey.getCavers().contains("I. Sachsenmaier"));
-        assertTrue(survey.getCavers().contains("R. Schuster"));
-        assertEquals(new BigDecimal("3.20"), survey.getDeclination());
-        assertEquals(AzimutUnits.DEGREES, survey.getAzimutUnit());
-        assertEquals(LengthUnits.METRES, survey.getLengthUnit());
-        assertEquals(LengthUnits.METRES, survey.getDimensionUnit());
-        assertEquals(InclinationUnits.DEGREES, survey.getInclinationUnit());
-        assertEquals(Dimensions.LEFT, survey.getDimensionsOrder().get(1));
-        assertEquals(Dimensions.RIGHT, survey.getDimensionsOrder().get(2));
-        assertEquals(Dimensions.UP, survey.getDimensionsOrder().get(3));
-        assertEquals(Dimensions.DOWN, survey.getDimensionsOrder().get(4));
-        assertEquals(ShotItems.LENGTH, survey.getShotItemsOrder().get(1));
-        assertEquals(ShotItems.INCLINATION, survey.getShotItemsOrder().get(2));
-        assertEquals(ShotItems.AZIMUT, survey.getShotItemsOrder().get(3));
-        assertEquals(ShotItems.REVERSE_INCLINATION, survey.getShotItemsOrder().get(4));
-        assertEquals(ShotItems.REVERSE_AZIMUT, survey.getShotItemsOrder().get(5));
-        assertTrue(survey.isReverse());
-        assertEquals(DimensionsAssociations.FROM, survey.getDimensionsAssociation());
-        List<Shot> shots = survey.getShots();
-        //   assertEquals(6, shots.size());
+        Survey survey1 = cave.getSurveys().get(0);
+        assertEquals("Höhle", survey1.getCaveName());
+        assertEquals("10.1", survey1.getName());
+        assertEquals(LocalDate.of(2020, 6, 14), survey1.getDate());
+        assertEquals("Katasternummer 7225/10", survey1.getComment());
+        assertTrue(survey1.getCavers().contains("I. Sachsenmaier"));
+        assertTrue(survey1.getCavers().contains("R. Schuster"));
+        assertEquals(new BigDecimal("3.20"), survey1.getDeclination());
+        assertEquals(AzimutUnits.DEGREES, survey1.getAzimutUnit());
+        assertEquals(LengthUnits.METRES, survey1.getLengthUnit());
+        assertEquals(LengthUnits.METRES, survey1.getDimensionUnit());
+        assertEquals(InclinationUnits.DEGREES, survey1.getInclinationUnit());
+        assertEquals(Dimensions.LEFT, survey1.getDimensionsOrder().get(1));
+        assertEquals(Dimensions.RIGHT, survey1.getDimensionsOrder().get(2));
+        assertEquals(Dimensions.UP, survey1.getDimensionsOrder().get(3));
+        assertEquals(Dimensions.DOWN, survey1.getDimensionsOrder().get(4));
+        assertEquals(ShotItems.LENGTH, survey1.getShotItemsOrder().get(1));
+        assertEquals(ShotItems.INCLINATION, survey1.getShotItemsOrder().get(2));
+        assertEquals(ShotItems.AZIMUT, survey1.getShotItemsOrder().get(3));
+        assertEquals(ShotItems.REVERSE_INCLINATION, survey1.getShotItemsOrder().get(4));
+        assertEquals(ShotItems.REVERSE_AZIMUT, survey1.getShotItemsOrder().get(5));
+        assertTrue(survey1.isReverse());
+        assertEquals(DimensionsAssociations.FROM, survey1.getDimensionsAssociation());
+        List<Shot> shots = survey1.getShots();
+        assertEquals(6, shots.size());
     }
 
     @Test
@@ -141,7 +139,7 @@ public class CompassParserTest {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/invalid.dat");
         SurveyParser parser = new CompassParser();
         try {
-            Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
+            parser.parse("Test Hole", is, Charset.forName("Cp1252"));
             fail("Needs to throw an exception");
         } catch (SurveyException e) {
             assertTrue(e.getMessage().contains("Error while reading line 6"));

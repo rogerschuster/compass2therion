@@ -33,18 +33,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author roger
  */
 public class CompassParser extends AbstractSurveyParser {
+
+    private static final Logger LOG = Logger.getLogger(CompassParser.class.getName());
 
     private static final String FORM_FEED = "\u000C";
     private static final String SUB = "\u001A";
@@ -58,6 +63,8 @@ public class CompassParser extends AbstractSurveyParser {
     private static final String DECLINATION_MATCH = "DECLINATION:";
     private static final String FORMAT_MATCH = "FORMAT:"; // optional in Compass
     private static final String CORRECTIONS_MATCH = "CORRECTIONS:"; // optional in Compass
+    private static final BigDecimal HUNDERED_EIGHTY = new BigDecimal("180.00");
+    private static final BigDecimal NINE_NINE_NINE = new BigDecimal("-999.00");
 
     @Override
     public Cave parse(String caveName, File file, Charset charset) throws IOException {
@@ -236,7 +243,177 @@ public class CompassParser extends AbstractSurveyParser {
 
     private void parseShot(final Survey survey, final String line) {
         Shot shot = new Shot();
-        // TODO
+
+        BigDecimal azimut = null;
+        BigDecimal azimutReverse = null;
+        BigDecimal inclination = null;
+        BigDecimal inclinationReverse = null;
+        StringBuilder comments = new StringBuilder();
+
+        String[] split = line.trim().split("\\s+");
+        for (int i = 0; i < split.length; i++) {
+            String s = split[i];
+            if (i == 0) {
+                shot.setFrom(s);
+            } else if (i == 1) {
+                shot.setTo(s);
+            } else if (i == 2) {
+                BigDecimal len = convertLen(survey, s);
+                shot.setLength(len);
+            } else if (i == 3) {
+                azimut = new BigDecimal(s);
+            } else if (i == 4) {
+                inclination = new BigDecimal(s);
+            } else if (i == 5) {
+                BigDecimal left = convertDim(survey, shot, s);
+                shot.setLeft(left);
+            } else if (i == 6) {
+                BigDecimal up = convertDim(survey, shot, s);
+                shot.setUp(up);
+            } else if (i == 7) {
+                BigDecimal down = convertDim(survey, shot, s);
+                shot.setDown(down);
+            } else if (i == 8) {
+                BigDecimal right = convertDim(survey, shot, s);
+                shot.setRight(right);
+            } // the following items are optional
+            // if backsights enabled... 
+            else if (survey.isReverse()) {
+                // column 9 holds reverse azimut
+                if (i == 9) {
+                    azimutReverse = new BigDecimal(s);
+                }
+                // column 10 holds reverse inclination
+                if (i == 10) {
+                    inclinationReverse = new BigDecimal(s);
+                }
+                // column 11 may hold either survey flags or beginn of comment
+                if (i == 11) {
+                    if (s.startsWith("#|")) {
+                        // TODO flags are ignored so far
+                    } else {
+                        comments.append(s).append(' ');
+                    }
+                }
+                // column 12ff may hold comment
+                if (i >= 12) {
+                    comments.append(s).append(' ');
+                }
+            } // if backsights are not enabled...
+            else if (!survey.isReverse()) {
+                // column 9 may hold either survey flags or beginn of comment
+                if (i == 9) {
+                    if (s.startsWith("#|")) {
+                        // TODO flags are ignored so far
+                    } else {
+                        comments.append(s).append(' ');
+                    }
+                }
+                // column 10ff may hold  comment
+                if (i >= 10) {
+                    comments.append(s).append(' ');
+                }
+            }
+
+        }
+
+        /*
+        If backsights are enabled the user can omit one of the bussole or 
+        inclinometer readings and insert "M" for "Missing" in the cave editor.
+        Internally those columns are stored as value -999. Other cave surveying
+        software may not know this concept. In this case we need to flip 
+        the existing value by 180 or 90 degrees and use the result as replacement
+        for the missing value.
+         */
+        if (survey.isReverse()) {
+            if (azimut != null && azimutReverse != null) {
+                if (azimut.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
+                    azimut = flipAzimut(azimutReverse);
+                    LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                } else if (azimutReverse.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
+                    azimutReverse = flipAzimut(azimut);
+                    LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping reverse azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                }
+                shot.setReverseAzimut(convertAzimut(azimutReverse, survey));
+            }
+
+            if (inclination != null && inclinationReverse != null) {
+                if (inclination.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
+                    inclination = flipInc(inclinationReverse);
+                    LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                } else if (inclinationReverse.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
+                    inclinationReverse = flipInc(inclination);
+                    LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping reverse inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                }
+                shot.setReverseInclination(inclinationReverse);
+            }
+        }
+
+        shot.setAzimut(convertAzimut(azimut, survey));
+        shot.setInclination(convertInclination(inclination, survey));
+
+        if (comments.length() > 0) {
+            shot.setComment(comments.toString().trim());
+        }
+
         survey.addShot(shot);
+    }
+
+    private BigDecimal flipInc(BigDecimal inc) {
+        return inc.negate();
+    }
+
+    private BigDecimal flipAzimut(BigDecimal az) {
+        BigDecimal res;
+        if (az.setScale(2, RoundingMode.HALF_UP).compareTo(HUNDERED_EIGHTY) > 0) {
+            res = az.subtract(HUNDERED_EIGHTY);
+        } else {
+            res = HUNDERED_EIGHTY.add(az);
+        }
+
+        return res;
+    }
+
+    private BigDecimal convertAzimut(BigDecimal azimut, final Survey survey) {
+        // default unit is degrees.
+        if (AzimutUnits.GRADS.equals(survey.getAzimutUnit())) {
+            azimut = degreeToGradians(azimut);
+        }
+        return azimut;
+    }
+
+    private BigDecimal convertInclination(BigDecimal inc, final Survey survey) {
+        // default unit is degrees.
+        if (InclinationUnits.GRADS.equals(survey.getInclinationUnit())) {
+            inc = degreeToGradians(inc);
+        } else if (InclinationUnits.PERCENT.equals(survey.getInclinationUnit())) {
+            inc = degreeToPercent(inc);
+        }
+        return inc;
+    }
+
+    private BigDecimal convertLen(Survey survey, String s) {
+        BigDecimal len = new BigDecimal(s); // default unit is decimal feet
+        if (LengthUnits.METRES.equals(survey.getLengthUnit())) {
+            len = decimalFeetToMetres(len);
+        }
+        return len;
+    }
+
+    /*
+    In Compass one can enter "P" for "Passage" instead of a LRUD value. 
+    For example if you have a survey station at a T-intersection with a passage 
+    opening to the left, you would type "P" in the "left" column of the Compass 
+    cave editor. Compass viewer needs this info for not drawing a wall where is
+    none. Other cave survey software does not know about this concept why the
+    negative number is replaced with zero.
+     */
+    private BigDecimal convertDim(Survey survey, Shot shot, String s) {
+        if (s.contains("-")) {
+            LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Setting a LRUD value to zero.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+            return BigDecimal.ZERO;
+        } else {
+            return convertLen(survey, s);
+        }
     }
 }
