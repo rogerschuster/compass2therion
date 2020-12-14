@@ -21,11 +21,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  *
@@ -35,7 +33,6 @@ public class Survey implements Serializable {
 
     private final List<Shot> shots = new ArrayList<>();
     private final List<String> cavers = new ArrayList<>();
-    private final Set<String> stations = new HashSet<>();
     private final Map<Integer, Dimensions> dimensionsOrder = new HashMap<>();
     private final Map<Integer, ShotItems> shotItemsOrder = new HashMap<>();
 
@@ -62,17 +59,11 @@ public class Survey implements Serializable {
     public void addShot(Shot shot) {
         if (!shots.contains(shot)) {
             shots.add(shot);
-            stations.add(shot.getFrom());
-            stations.add(shot.getTo());
         }
     }
 
     public List<Shot> getShots() {
         return shots;
-    }
-
-    public Set<String> getStations() {
-        return stations;
     }
 
     public String getCaveName() {

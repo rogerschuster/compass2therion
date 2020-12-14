@@ -17,52 +17,40 @@
 package de.r_schuster.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  *
  * @author roger
  */
-public class Cave implements Serializable {
+public class NetworkConnection implements Serializable {
 
-    private final List<Survey> surveys = new ArrayList<>();
-    private final String name;
-    private final Set<NetworkConnection> connections = new HashSet<>();
+    private final String station;
+    private final String thisSurvey;
+    private final String otherSurvey;
 
-    public Cave(String name) {
-        this.name = name;
+    public NetworkConnection(String station, String thisSurvey, String otherSurvey) {
+        this.station = station;
+        this.thisSurvey = thisSurvey;
+        this.otherSurvey = otherSurvey;
     }
 
-    public void addSurvey(Survey survey) {
-        if (!surveys.contains(survey)) {
-            surveys.add(survey);
-        }
+    public String getStation() {
+        return station;
     }
 
-    public List<Survey> getSurveys() {
-        return surveys;
+    public String getThisSurvey() {
+        return thisSurvey;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void addConnection(NetworkConnection conn) {
-        connections.add(conn);
-    }
-
-    public Set<NetworkConnection> getConnections() {
-        return connections;
+    public String getOtherSurvey() {
+        return otherSurvey;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 47 * hash + Objects.hashCode(this.name);
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.station);
         return hash;
     }
 
@@ -77,8 +65,13 @@ public class Cave implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Cave other = (Cave) obj;
-        return Objects.equals(this.name, other.name);
+        final NetworkConnection other = (NetworkConnection) obj;
+        return Objects.equals(this.station, other.station);
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkConnection{" + "station=" + station + ", thisSurvey=" + thisSurvey + ", otherSurvey=" + otherSurvey + '}';
     }
 
 }

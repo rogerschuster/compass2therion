@@ -1,0 +1,129 @@
+Dreieingangshöhle
+SURVEY NAME: 1
+SURVEY DATE: 8 4 2018  COMMENT:Oberflächenmesszug zwischen Dreieingangshöhle und Gegenhöhle
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                   0                    1    42.29   126.00   -16.00     0.00     0.00     0.00     0.00   308.00    15.00  #|PL#  0: Eingang Dreieingangshöhle, westliche Wand, in Kopfhöhe
+                   1                    2    39.47    91.00   -24.00    10.43     0.00     0.00     0.00   275.00    23.00  #|PL#  1: rechtwinklig wachsender Baum, an der Außenseite des rechten Winkels
+                   2                    3    87.83    55.00     5.00     8.43     0.00     0.00     0.00   235.00    -6.00  #|PL#  2: an einem Baum
+                   3                    4    30.54   293.00    11.00    23.59     0.00     0.00     0.00   112.00   -13.00  #|PL#  4: Felsblock im Eingang der Gegenhöhle
+
+Dreieingangshöhle
+SURVEY NAME: 2
+SURVEY DATE: 8 4 2018  COMMENT:Gegenhöhle
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                   4                    5    13.71   210.00     5.00     5.61     9.51     1.90     0.66    30.00    -7.00
+                   5                    6    14.53   292.00     0.00     0.00     4.69     0.16     7.35   110.00    -1.00
+                   6                    7     4.66   319.00    -6.00     0.33     3.18     0.85     1.97   139.00     6.00
+                   7                    8     3.35  -999.00    19.00     0.98     1.31     0.00     1.48    40.00   -17.00
+                   8                    9     7.05   322.00     5.00     1.15     6.56     1.31     2.85   141.00    -5.00
+                   9                   10     2.59   201.00     7.00     2.76     8.07     0.66     0.00    14.00    -7.00
+                  10                   11     6.04   320.00    -3.00     1.64     7.38     1.31     1.74  -999.00  -999.00  fliegender Messzug ohne Markierung
+                  11                   12     3.67   313.00    28.00     1.31     2.20     1.15     0.00  -999.00  -999.00  fliegender Messzug ohne Markierung. Engstelle zur Gegenhöhle
+                  12                  12'     0.00     0.00     0.00     0.33     1.31     0.33     0.66   180.00     0.00  #| #
+                  10                   13    10.73    70.00    54.00    -9.90     7.38     1.31    -9.90   232.00   -54.00  steil aufwärts führender Seitengang in der letzten Kammer
+                  13                   14     7.71    25.00    28.00     0.79     2.30     2.95     0.66  -999.00  -999.00
+                  14                  14'     0.00     0.00     0.00     1.31     1.31     0.66     1.12   180.00     0.00
+
+Dreieingangshöhle
+SURVEY NAME: 3
+SURVEY DATE: 8 4 2018  COMMENT:Eingangsbereich Dreieingangshöhle
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                   0                   15    25.72    98.00   -11.00     6.56    10.17     4.76    -9.90   281.00    10.00  15: östliche Wand Eingang Dreieingangshöhle
+                  15                   16    12.76    30.00    -3.00     7.51     4.56     1.80     0.66   208.00     2.00  16: Scherbenschluf
+                  16                  16'     0.00     0.00     0.00     1.64     1.64     1.31     2.30   180.00     0.00
+
+Dreieingangshöhle
+SURVEY NAME: 4
+SURVEY DATE: 8 4 2018  COMMENT:Hauptgang / Geröllgang
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                   0                   17    19.82    57.00    -5.00     0.00    10.17     4.76    22.90   239.00     3.00  17: rechte Wand Hauptgang.
+                  17                   18    16.93    19.00     9.00     7.05    10.99     2.26     0.33   199.00   -10.00
+                  18                   19     7.55    95.00   -11.00     0.98    18.37     3.05     5.87   276.00    11.00
+                  19                   20    17.26    96.00    -9.00     7.32     3.31     3.12    -9.90   276.00     8.00
+                  20                   21    11.88    24.00   -18.00     4.92     7.45     2.03     0.00   203.00    18.00
+                  21                   22     9.74    53.00    13.00     0.00     1.74     0.59     1.64   236.00   -14.00
+                  22                   23    11.12    75.00    15.00     0.33     4.27     0.56     2.62   256.00   -16.00
+                  23                   24    10.01   110.00   -46.00     0.33     3.61     7.32     1.64  -999.00  -999.00  24: Engstelle zur Gegenhöhle, ungefähr identisch mit Punkt 12
+                  24                  24'     0.00     0.00     0.00     0.33     6.56     0.98     0.33   180.00     0.00
+
+Dreieingangshöhle
+SURVEY NAME: 5
+SURVEY DATE: 8 4 2018  COMMENT:Hauptgang bis Endversturz
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                  19                   25    32.22    32.00     1.00     5.25     3.28     2.62     0.66   212.00    -2.00  25: an der Decke des engen Schlufs in die Versturzkammer
+                  25                   26     8.79    64.00    34.00     0.49     0.00     1.31     0.49   229.00   -33.00  Versturzkammer
+                  26                   27     3.84    25.00    35.00     4.20     2.26     1.64     0.66   188.00   -34.00
+                  27                   28    11.35    70.00    46.00     5.28     0.98     1.38     1.28   235.00   -45.00
+                  28                   29     7.84   133.00   -35.00     1.08     2.20     2.85     2.46   327.00    37.00
+                  29                   30     2.72     0.00   -90.00     1.64    -9.90     0.00     1.64  -999.00  -999.00  Lotung zum Boden der alten Grabungsstelle
+                  28                   31    14.63   278.00    39.00     2.46     2.20     2.85     1.08   100.00   -41.00  Durch den Deckenausbruch am Endversturz
+                  31                   32    16.86     0.00    90.00     1.64    -9.90     5.41     5.64  -999.00  -999.00  Fliegender Messzug ohne Punkt, Peilung zur Schlotdecke
+
+Dreieingangshöhle
+SURVEY NAME: 6
+SURVEY DATE: 8 4 2018  COMMENT:Seitengang Lehmhalle
+SURVEY TEAM: 
+Sachsenmaier, Schuster, Übelhör
+DECLINATION:    2.79  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                  17                   33    17.06   301.00    11.00    -9.90    12.04     2.33    -9.90   120.00   -11.00  Seitengang zur Lehmhalle
+                  33                   34    13.94   275.00    53.00     2.89     4.99     1.71     1.21    95.00   -55.00  34: kurz vor dem Klemmblock
+                  34                   35    14.37   300.00    -1.00     0.00     8.60     8.76     1.64  -999.00  -999.00  Lehmhalle
+                  35                  35'     0.00     0.00     0.00     3.28     3.28     6.56     2.62   180.00     0.00
+
+Dreieingangshöhle
+SURVEY NAME: 7
+SURVEY DATE: 6 9 2019  COMMENT:Schluf links hinter dem Eingang
+SURVEY TEAM: 
+I. Sachsenmaier, R. Schuster
+DECLINATION:    3.03  FORMAT: DMMDLRUDLDAdaBF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT     AZM2     INC2   FLAGS  COMMENTS
+
+                  33                   36     5.15   260.00    31.00     2.62     5.58     1.64     1.97    79.00   -33.00
+                  36                   37     8.63   262.00    11.00     1.97     4.92     0.98     2.95  -999.00  -999.00
+                  37                   38     3.71   182.00     0.00     1.97     1.64     0.66     0.00  -999.00  -999.00
+                  38                  38'     0.00     0.00     0.00     0.66     0.33     0.66     1.64  -999.00  -999.00  geht noch 0,8 m weiter -38
+
+Dreieingangshöhle
+SURVEY NAME: 8
+SURVEY DATE: 6 9 2019  COMMENT:Oberflächenmesszug von der Gegenhöhle bergauf
+SURVEY TEAM: 
+I. Sachsenmaier, R. Schuster
+DECLINATION:    3.03  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                   4                   39     8.99    17.00    38.00     0.00     0.00     0.00     0.00  #|PL#  Fels
+                  39                   40    16.44   355.00    39.00     0.00     0.00     0.00     0.00  #|PL#  Fels
+                  40                   41     5.81    18.00    12.00     0.00     0.00     0.00     0.00  #|PL#  Fels
+                  41                   42    39.70    14.00    25.00     0.00     0.00     0.00     0.00  #|PL#  Baum
+
+
