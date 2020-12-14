@@ -76,8 +76,125 @@ public class CompassParserTest {
         assertEquals(ShotItems.REVERSE_AZIMUT, survey1.getShotItemsOrder().get(5));
         assertTrue(survey1.isReverse());
         assertEquals(DimensionsAssociations.FROM, survey1.getDimensionsAssociation());
-        List<Shot> shots = survey1.getShots();
-        assertEquals(6, shots.size());
+        List<Shot> shots1 = survey1.getShots();
+
+        assertEquals(6, shots1.size());
+        assertEquals("0", shots1.get(0).getFrom());
+        assertEquals("1", shots1.get(0).getTo());
+        assertEquals(new BigDecimal("6.82"), shots1.get(0).getLength());
+        assertEquals(new BigDecimal("11.00"), shots1.get(0).getInclination());
+        assertEquals(new BigDecimal("98.00"), shots1.get(0).getAzimut());
+        assertEquals(new BigDecimal("-10.00"), shots1.get(0).getReverseInclination());
+        assertEquals(new BigDecimal("276.00"), shots1.get(0).getReverseAzimut());
+        assertEquals(new BigDecimal("0"), shots1.get(0).getLeft());
+        assertEquals(new BigDecimal("0"), shots1.get(0).getRight());
+        assertEquals(new BigDecimal("2.25"), shots1.get(0).getUp());
+        assertEquals(new BigDecimal("1.29"), shots1.get(0).getDown());
+        assertEquals("Höhleneingang", shots1.get(0).getComment());
+
+        assertEquals("1", shots1.get(1).getFrom());
+        assertEquals("2", shots1.get(1).getTo());
+        assertEquals(new BigDecimal("9.36"), shots1.get(1).getLength());
+        assertEquals(new BigDecimal("9.00"), shots1.get(1).getInclination());
+        assertEquals(new BigDecimal("354.00"), shots1.get(1).getAzimut());
+        assertEquals(new BigDecimal("-10.00"), shots1.get(1).getReverseInclination());
+        assertEquals(new BigDecimal("174.00"), shots1.get(1).getReverseAzimut());
+        assertEquals(new BigDecimal("0"), shots1.get(1).getLeft());
+        assertEquals(new BigDecimal("0"), shots1.get(1).getRight());
+        assertEquals(new BigDecimal("6.19"), shots1.get(1).getUp());
+        assertEquals(new BigDecimal("1.59"), shots1.get(1).getDown());
+        assertNull(shots1.get(1).getComment());
+
+        assertEquals("2", shots1.get(2).getFrom());
+        assertEquals("3", shots1.get(2).getTo());
+        assertEquals(new BigDecimal("6.06"), shots1.get(2).getLength());
+        assertEquals(new BigDecimal("33.00"), shots1.get(2).getInclination());
+        assertEquals(new BigDecimal("29.00"), shots1.get(2).getAzimut());
+        assertEquals(new BigDecimal("-33.00"), shots1.get(2).getReverseInclination());
+        assertEquals(new BigDecimal("209.00"), shots1.get(2).getReverseAzimut());
+        assertEquals(new BigDecimal("2.96"), shots1.get(2).getLeft());
+        assertEquals(new BigDecimal("2.58"), shots1.get(2).getRight());
+        assertEquals(new BigDecimal("6.21"), shots1.get(2).getUp());
+        assertEquals(new BigDecimal("1.69"), shots1.get(2).getDown());
+        assertEquals("Stufe", shots1.get(2).getComment());
+
+        assertEquals("3", shots1.get(3).getFrom());
+        assertEquals("4", shots1.get(3).getTo());
+        assertEquals(new BigDecimal("3.85"), shots1.get(3).getLength());
+        assertEquals(new BigDecimal("-3.00"), shots1.get(3).getInclination());
+        assertEquals(new BigDecimal("74.00"), shots1.get(3).getAzimut());
+        assertEquals(new BigDecimal("3.00"), shots1.get(3).getReverseInclination());
+        assertEquals(new BigDecimal("254.00"), shots1.get(3).getReverseAzimut());
+        assertEquals(new BigDecimal("0.70"), shots1.get(3).getLeft());
+        assertEquals(new BigDecimal("2.20"), shots1.get(3).getRight());
+        assertEquals(new BigDecimal("0.87"), shots1.get(3).getUp());
+        assertEquals(new BigDecimal("1.90"), shots1.get(3).getDown());
+        assertNull(shots1.get(3).getComment());
+
+        Survey survey2 = cave.getSurveys().get(1);
+        assertEquals("Höhle", survey2.getCaveName());
+        assertEquals("10.2", survey2.getName());
+        assertEquals(LocalDate.of(2020, 12, 13), survey2.getDate());
+        assertEquals("Just a test", survey2.getComment());
+        assertTrue(survey2.getCavers().contains("Häberle"));
+        assertTrue(survey2.getCavers().contains("Eisele"));
+        assertEquals(new BigDecimal("-1.00"), survey2.getDeclination());
+        assertEquals(AzimutUnits.GRADS, survey2.getAzimutUnit());
+        assertEquals(LengthUnits.METRES, survey2.getLengthUnit());
+        assertEquals(LengthUnits.FEET_DECIMAL, survey2.getDimensionUnit());
+        assertEquals(InclinationUnits.PERCENT, survey2.getInclinationUnit());
+        assertEquals(Dimensions.UP, survey2.getDimensionsOrder().get(1));
+        assertEquals(Dimensions.DOWN, survey2.getDimensionsOrder().get(2));
+        assertEquals(Dimensions.LEFT, survey2.getDimensionsOrder().get(3));
+        assertEquals(Dimensions.RIGHT, survey2.getDimensionsOrder().get(4));
+        assertEquals(ShotItems.AZIMUT, survey2.getShotItemsOrder().get(1));
+        assertEquals(ShotItems.LENGTH, survey2.getShotItemsOrder().get(2));
+        assertEquals(ShotItems.INCLINATION, survey2.getShotItemsOrder().get(3));
+        assertEquals(ShotItems.REVERSE_INCLINATION, survey2.getShotItemsOrder().get(4));
+        assertEquals(ShotItems.REVERSE_AZIMUT, survey2.getShotItemsOrder().get(5));
+        assertFalse(survey2.isReverse());
+        assertEquals(DimensionsAssociations.TO, survey2.getDimensionsAssociation());
+        List<Shot> shots2 = survey2.getShots();
+        assertEquals(4, shots2.size());
+
+        assertEquals("5", shots2.get(0).getFrom());
+        assertEquals("2.1", shots2.get(0).getTo());
+        assertEquals(new BigDecimal("11.11"), shots2.get(0).getAzimut());
+        assertEquals(new BigDecimal("12.56"), shots2.get(0).getLength());
+        assertEquals(new BigDecimal("8.75"), shots2.get(0).getInclination());
+        assertNull(shots2.get(0).getReverseInclination());
+        assertNull(shots2.get(0).getReverseAzimut());
+        assertEquals(new BigDecimal("29.53"), shots2.get(0).getUp());
+        assertEquals(new BigDecimal("26.25"), shots2.get(0).getDown());
+        assertEquals(new BigDecimal("22.97"), shots2.get(0).getLeft());
+        assertEquals(new BigDecimal("19.69"), shots2.get(0).getRight());
+        assertEquals("test test", shots2.get(0).getComment());
+
+        assertEquals("2.1", shots2.get(1).getFrom());
+        assertEquals("2.2", shots2.get(1).getTo());
+        assertEquals(new BigDecimal("27.78"), shots2.get(1).getAzimut());
+        assertEquals(new BigDecimal("3.80"), shots2.get(1).getLength());
+        assertEquals(new BigDecimal("-12.28"), shots2.get(1).getInclination());
+        assertNull(shots2.get(1).getReverseInclination());
+        assertNull(shots2.get(1).getReverseAzimut());
+        assertEquals(new BigDecimal("26.25"), shots2.get(1).getUp());
+        assertEquals(new BigDecimal("13.12"), shots2.get(1).getDown());
+        assertEquals(new BigDecimal("9.84"), shots2.get(1).getLeft());
+        assertEquals(new BigDecimal("3.28"), shots2.get(1).getRight());
+        assertEquals("blah blah", shots2.get(1).getComment());
+
+        assertEquals("2.2", shots2.get(2).getFrom());
+        assertEquals("2.3", shots2.get(2).getTo());
+        assertEquals(new BigDecimal("50.00"), shots2.get(2).getAzimut());
+        assertEquals(new BigDecimal("7.89"), shots2.get(2).getLength());
+        assertEquals(new BigDecimal("21.26"), shots2.get(2).getInclination());
+        assertNull(shots2.get(2).getReverseInclination());
+        assertNull(shots2.get(2).getReverseAzimut());
+        assertEquals(new BigDecimal("3.28"), shots2.get(2).getUp());
+        assertEquals(new BigDecimal("0.98"), shots2.get(2).getDown());
+        assertEquals(new BigDecimal("1.31"), shots2.get(2).getLeft());
+        assertEquals(new BigDecimal("3.28"), shots2.get(2).getRight());
+        assertNull(shots2.get(2).getComment());
     }
 
     @Test

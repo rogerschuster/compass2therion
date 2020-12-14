@@ -413,7 +413,11 @@ public class CompassParser extends AbstractSurveyParser {
             LOG.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Setting a LRUD value to zero.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
             return BigDecimal.ZERO;
         } else {
-            return convertLen(survey, s);
+            BigDecimal len = new BigDecimal(s); // default unit is decimal feet
+            if (LengthUnits.METRES.equals(survey.getDimensionUnit())) {
+                len = decimalFeetToMetres(len);
+            }
+            return len;
         }
     }
 }

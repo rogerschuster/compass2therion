@@ -1,13 +1,19 @@
 package de.r_schuster;
 
+import de.r_schuster.parser.CompassParser;
+import de.r_schuster.parser.SurveyParser;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 /**
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+public class App {
+
+    public static void main(String[] args) throws IOException {
+        SurveyParser parser = new CompassParser();
+        parser.parse(args[0], new File(args[1]), Charset.forName("Cp1252"));
     }
 }
