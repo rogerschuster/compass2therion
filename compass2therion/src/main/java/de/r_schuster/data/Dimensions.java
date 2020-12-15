@@ -23,15 +23,17 @@ import de.r_schuster.exceptions.SurveyException;
  * @author roger
  */
 public enum Dimensions {
-    LEFT('L'),
-    RIGHT('R'),
-    UP('U'),
-    DOWN('D');
+    LEFT('L', "left"),
+    RIGHT('R', "right"),
+    UP('U', "up"),
+    DOWN('D', "down");
 
     private final char cha;
+    private final String text;
 
-    private Dimensions(char cha) {
+    private Dimensions(char cha, String text) {
         this.cha = cha;
+        this.text = text;
     }
 
     public static Dimensions getByType(char type) {
@@ -43,4 +45,9 @@ public enum Dimensions {
 
         throw new SurveyException(type + " is a not supported dimension");
     }
+
+    public String getText() {
+        return text;
+    }
+
 }

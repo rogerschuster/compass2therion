@@ -18,6 +18,7 @@ package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Connection;
+import de.r_schuster.data.Dimensions;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
@@ -27,7 +28,6 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -145,6 +145,17 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             }
 
             newLine();
+        }
+        newLine();
+
+        // data order for passage dimensions
+        write("data dimensions station ");
+        Map<Integer, Dimensions> dimensionsOrder = survey.getDimensionsOrder();
+        List<Integer> d = new ArrayList<>(dimensionsOrder.keySet());
+        Collections.sort(d);
+        for (Integer i : d) {
+            Dimensions dim = dimensionsOrder.get(i);
+            write(dim.getText(), " ");
         }
         newLine();
 
