@@ -17,9 +17,7 @@
 package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 /**
@@ -28,8 +26,6 @@ import java.nio.charset.Charset;
  */
 public interface SurveyWriter {
 
-    void write(File file, Charset charset, Cave cave) throws IOException;
-
-    void write(OutputStream out, Charset charset, Cave cave) throws IOException;
+    void write(Charset charset, Cave cave) throws IOException;
 
 }

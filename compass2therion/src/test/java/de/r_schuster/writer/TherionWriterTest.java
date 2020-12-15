@@ -22,9 +22,9 @@ import de.r_schuster.networking.Networking;
 import de.r_schuster.parser.CompassParser;
 import de.r_schuster.parser.CompassParserTest;
 import de.r_schuster.parser.SurveyParser;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,8 +40,7 @@ public class TherionWriterTest {
     public TherionWriterTest() {
     }
 
-    
-     @Test
+    @Test
     public void simple() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
         SurveyParser parser = new CompassParser();
@@ -49,17 +48,17 @@ public class TherionWriterTest {
         Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"), nw);
 
         Charset charset = Charset.forName("UTF-8");
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        SurveyWriter wrt = new TherionWriter();
-        wrt.write(out, charset, cave);
+        StringWriter out = new StringWriter();
+        SurveyWriter wrt = new TherionWriter(out);
+        wrt.write(charset, cave);
 
-        String res = new String(out.toByteArray(), charset);
-        System.err.println(res);
+        String toString = out.toString();
+        System.err.println(toString);
 
-        String[] split = res.split(newline);
+        String[] split = toString.split(newline);
         assertEquals("encoding UTF-8", split[0]);
     }
-    
+
     @Test
     public void complex() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/dreieingangshoehle.dat");
@@ -68,14 +67,14 @@ public class TherionWriterTest {
         Cave cave = parser.parse("Dreieingangshöhle", is, Charset.forName("Cp1252"), nw);
 
         Charset charset = Charset.forName("UTF-8");
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        SurveyWriter wrt = new TherionWriter();
-        wrt.write(out, charset, cave);
+        StringWriter out = new StringWriter();
+        SurveyWriter wrt = new TherionWriter(out);
+        wrt.write(charset, cave);
 
-        String res = new String(out.toByteArray(), charset);
-        System.err.println(res);
+        String toString = out.toString();
+        System.err.println(toString);
 
-        String[] split = res.split(newline);
+        String[] split = toString.split(newline);
         assertEquals("encoding UTF-8", split[0]);
     }
 }

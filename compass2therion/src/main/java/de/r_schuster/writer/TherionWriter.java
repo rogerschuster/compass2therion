@@ -19,54 +19,56 @@ package de.r_schuster.writer;
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Connection;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 
 /**
  *
  * @author roger
  */
-public class TherionWriter implements SurveyWriter {
+public class TherionWriter extends BufferedWriter implements SurveyWriter {
+
     private static final String COMMENT = "# ";
-    
-    @Override
-    public void write(File file, Charset charset, Cave cave) throws IOException {
-        try (OutputStream out = new FileOutputStream(file)) {
-            write(out, charset, cave);
+
+    public TherionWriter(Writer out) {
+        super(out);
+    }
+
+    private void commentln(String str) throws IOException {
+        super.write(COMMENT);
+        super.write(str);
+        super.newLine();
+    }
+
+    private void writeln(String str) throws IOException {
+        super.write(str);
+        super.newLine();
+    }
+
+    private void write(String... str) throws IOException {
+        for (String s : str) {
+            super.write(s);
         }
     }
-    
+
     @Override
-    public void write(OutputStream out, Charset charset, Cave cave) throws IOException {
-        BufferedWriter wrt = new BufferedWriter(new OutputStreamWriter(out, charset));
-        
+    public void write(Charset charset, Cave cave) throws IOException {
+
         // mode line for editor
-        wrt.write("encoding ");
-        wrt.write(charset.name());
-        wrt.newLine();
-        
+        write("encoding ");
+        write(charset.name());
+        newLine();
+
         // cave name
-        wrt.write(COMMENT);
-        wrt.write(cave.getName());
-        wrt.newLine();
-        
+        commentln(cave.getName());
+
         // equate section
-        for(Connection conn : cave.getConnections()) {
-            wrt.write("equate ");
-            wrt.write(conn.getThisStation());
-            wrt.write("@");
-            wrt.write(conn.getThisSurvey());
-            wrt.write(' ');
-            wrt.write(conn.getOtherStation());
-            wrt.write("@");
-            wrt.write(conn.getOtherSurvey());
-            wrt.newLine();
+        for (Connection conn : cave.getConnections()) {
+            write("equate ", conn.getThisStation(), "@", conn.getThisSurvey(), " ", conn.getOtherStation(), "@", conn.getOtherSurvey());
+            newLine();
         }
-        
-        wrt.flush();
+
+        flush();
     }
 }
