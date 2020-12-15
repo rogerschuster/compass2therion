@@ -19,9 +19,11 @@ package de.r_schuster.writer;
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Connection;
 import de.r_schuster.data.Dimensions;
+import de.r_schuster.data.DimensionsAssociations;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
+import de.r_schuster.exceptions.SurveyException;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -88,7 +90,11 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         // surveys
         for (Survey survey : cave.getSurveys()) {
-            writeSurvey(survey);
+            try {
+                writeSurvey(survey);
+            } catch (Exception e) {
+                throw new SurveyException("Error while writing survey " + survey.getName(), e);
+            }
         }
 
         flush();
@@ -141,7 +147,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             }
 
             if (shot.getComment() != null) {
-                write("# ", shot.getComment());
+                write(COMMENT, shot.getComment());
             }
 
             newLine();
@@ -159,8 +165,28 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         }
         newLine();
 
+        // passage dimensions
+        for (Shot shot : survey.getShots()) {
+            if (survey.getDimensionsAssociation().equals(DimensionsAssociations.FROM)) {
+                write(shot.getFrom(), " ");
+            } else {
+                write(shot.getTo(), " ");
+            }
+
+            for (Integer i : d) {
+                Dimensions dim = dimensionsOrder.get(i);
+                write(shot, dim);
+            }
+            newLine();
+        }
+
+        newLine();
+
         writeln("endcentreline");
         writeln("endsurvey");
+
+        newLine();
+        newLine();
     }
 
     private void write(Shot shot, ShotItems item) throws IOException {
@@ -179,6 +205,25 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
                 break;
             case REVERSE_INCLINATION:
                 write(formatNum(shot.getReverseInclination()), " ");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void write(Shot shot, Dimensions dim) throws IOException {
+        switch (dim) {
+            case DOWN:
+                write(formatNum(shot.getDown()), " ");
+                break;
+            case LEFT:
+                write(formatNum(shot.getLeft()), " ");
+                break;
+            case RIGHT:
+                write(formatNum(shot.getRight()), " ");
+                break;
+            case UP:
+                write(formatNum(shot.getUp()), " ");
                 break;
             default:
                 break;
