@@ -37,22 +37,73 @@ public class FlatNetworkingTest {
     }
 
     @Test
-    public void simpleSurvey() throws IOException {
-        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
+    public void noConnection() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/networking/no_connection.dat");
         SurveyParser parser = new CompassParser();
-        Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
         Networking nw = new FlatNetworking();
-        nw.networking(cave);
+        Cave cave = parser.parse("Networking", is, Charset.forName("Cp1252"), nw);
+        assertEquals(0, cave.getConnections().size());
+    }
+
+    @Test
+    public void oneConnection() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/networking/one_connection.dat");
+        SurveyParser parser = new CompassParser();
+        Networking nw = new FlatNetworking();
+        Cave cave = parser.parse("Networking", is, Charset.forName("Cp1252"), nw);
         assertEquals(1, cave.getConnections().size());
+
+        Connection conn1 = new Connection("1", "1", "1", "2");
+
+        assertTrue(cave.getConnections().contains(conn1));
+    }
+
+    @Test
+    public void threeConnection() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/networking/three_connection.dat");
+        SurveyParser parser = new CompassParser();
+        Networking nw = new FlatNetworking();
+        Cave cave = parser.parse("Networking", is, Charset.forName("Cp1252"), nw);
+        assertEquals(3, cave.getConnections().size());
+
+        Connection conn1 = new Connection("1", "1", "1", "2");
+        Connection conn2 = new Connection("1", "1", "1", "3");
+        Connection conn3 = new Connection("1", "2", "1", "3");
+
+        assertTrue(cave.getConnections().contains(conn1));
+        assertTrue(cave.getConnections().contains(conn2));
+        assertTrue(cave.getConnections().contains(conn3));
+    }
+
+    @Test
+    public void sixConnection() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/networking/six_connection.dat");
+        SurveyParser parser = new CompassParser();
+        Networking nw = new FlatNetworking();
+        Cave cave = parser.parse("Networking", is, Charset.forName("Cp1252"), nw);
+        assertEquals(6, cave.getConnections().size());
+
+        Connection conn1 = new Connection("1", "1", "1", "2");
+        Connection conn2 = new Connection("1", "1", "1", "3");
+        Connection conn3 = new Connection("1", "2", "1", "3");
+        Connection conn4 = new Connection("1", "1", "1", "4");
+        Connection conn5 = new Connection("1", "1", "1", "4");
+        Connection conn6 = new Connection("1", "2", "1", "4");
+
+        assertTrue(cave.getConnections().contains(conn1));
+        assertTrue(cave.getConnections().contains(conn2));
+        assertTrue(cave.getConnections().contains(conn3));
+        assertTrue(cave.getConnections().contains(conn4));
+        assertTrue(cave.getConnections().contains(conn5));
+        assertTrue(cave.getConnections().contains(conn6));
     }
 
     @Test
     public void complex() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/dreieingangshoehle.dat");
         SurveyParser parser = new CompassParser();
-        Cave cave = parser.parse("Dreieingangshöhle", is, Charset.forName("Cp1252"));
         Networking nw = new FlatNetworking();
-        nw.networking(cave);
+        Cave cave = parser.parse("Dreieingangshöhle", is, Charset.forName("Cp1252"), nw);
         assertEquals(9, cave.getConnections().size());
     }
 }

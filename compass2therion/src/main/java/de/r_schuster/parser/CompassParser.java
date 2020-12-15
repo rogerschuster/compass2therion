@@ -26,6 +26,7 @@ import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
 import de.r_schuster.exceptions.SurveyException;
+import de.r_schuster.networking.Networking;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,14 +68,14 @@ public class CompassParser extends AbstractSurveyParser {
     private static final BigDecimal NINE_NINE_NINE = new BigDecimal("-999.00");
 
     @Override
-    public Cave parse(String caveName, File file, Charset charset) throws IOException {
+    public Cave parse(String caveName, File file, Charset charset, Networking networking) throws IOException {
         try (InputStream is = new FileInputStream(file)) {
-            return parse(caveName, is, charset);
+            return parse(caveName, is, charset, networking);
         }
     }
 
     @Override
-    public Cave parse(String caveName, InputStream is, Charset charset) throws IOException {
+    public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
 
         Cave cave = new Cave(caveName);
@@ -124,6 +125,8 @@ public class CompassParser extends AbstractSurveyParser {
             throw new SurveyException("Error while reading line " + pos + " of survey file!", e);
         }
 
+        networking.networking(cave); // establishing connections between surveys
+        
         return cave;
     }
 

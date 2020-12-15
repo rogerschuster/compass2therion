@@ -26,6 +26,7 @@ import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
 import de.r_schuster.exceptions.SurveyException;
+import de.r_schuster.networking.Networking;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -48,7 +49,7 @@ public class CompassParserTest {
     public void simpleSurvey() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/kleine_scheuer.dat");
         SurveyParser parser = new CompassParser();
-        Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
+        Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"), createNetworking());
 
         assertEquals("Kleine Scheuer", cave.getName());
 
@@ -201,7 +202,7 @@ public class CompassParserTest {
     public void compatibility() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/compatibility.dat");
         SurveyParser parser = new CompassParser();
-        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"));
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
 
         assertEquals(3, cave.getSurveys().size());
 
@@ -256,10 +257,20 @@ public class CompassParserTest {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/invalid.dat");
         SurveyParser parser = new CompassParser();
         try {
-            parser.parse("Test Hole", is, Charset.forName("Cp1252"));
+            parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
             fail("Needs to throw an exception");
         } catch (SurveyException e) {
             assertTrue(e.getMessage().contains("Error while reading line 6"));
         }
+    }
+
+    private Networking createNetworking() {
+        Networking net = new Networking() {
+            @Override
+            public void networking(Cave cave) {
+            }
+        };
+
+        return net;
     }
 }

@@ -17,6 +17,7 @@
 package de.r_schuster.parser;
 
 import de.r_schuster.data.Cave;
+import de.r_schuster.networking.Networking;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +29,8 @@ import java.nio.charset.Charset;
  */
 public interface SurveyParser {
 
-    Cave parse(String caveName, File file, Charset charset) throws IOException;
+    Cave parse(String caveName, File file, Charset charset, Networking networking) throws IOException;
 
-    Cave parse(String caveName, InputStream is, Charset charset) throws IOException;
+    Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException;
     
 }

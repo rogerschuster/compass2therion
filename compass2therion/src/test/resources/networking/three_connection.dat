@@ -1,4 +1,4 @@
-Three Connection Cave
+Two Connection Cave
 SURVEY NAME: 1
 SURVEY DATE: 12 15 2020  COMMENT:
 SURVEY TEAM: 
@@ -9,7 +9,7 @@ DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  COR
 
                    1                    2    32.81     0.00     0.00     0.00     0.00     0.00     0.00
 
-Three Connection Cave
+Two Connection Cave
 SURVEY NAME: 2
 SURVEY DATE: 12 15 2020  COMMENT:
 SURVEY TEAM: 
@@ -20,7 +20,7 @@ DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  COR
 
                    1                    3    32.81    90.00     0.00     0.00     0.00     0.00     0.00
 
-Three Connection Cave
+Two Connection Cave
 SURVEY NAME: 3
 SURVEY DATE: 12 15 2020  COMMENT:
 SURVEY TEAM: 
@@ -30,16 +30,5 @@ DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  COR
                 FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
 
                    1                    4    32.81   180.00     0.00     0.00     0.00     0.00     0.00
-
-Three Connection Cave
-SURVEY NAME: 4
-SURVEY DATE: 12 15 2020  COMMENT:
-SURVEY TEAM: 
-ada
-DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
-
-                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
-
-                   1                    5    32.81   270.00     0.00     0.00     0.00     0.00     0.00
 
 
