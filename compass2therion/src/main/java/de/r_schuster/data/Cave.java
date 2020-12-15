@@ -31,7 +31,7 @@ public class Cave implements Serializable {
 
     private final List<Survey> surveys = new ArrayList<>();
     private final String name;
-    private final Set<NetworkConnection> connections = new HashSet<>();
+    private final Set<Connection> connections = new HashSet<>();
 
     public Cave(String name) {
         this.name = name;
@@ -51,11 +51,11 @@ public class Cave implements Serializable {
         return name;
     }
 
-    public void addConnection(NetworkConnection conn) {
+    public void addConnection(Connection conn) {
         connections.add(conn);
     }
 
-    public Set<NetworkConnection> getConnections() {
+    public Set<Connection> getConnections() {
         return connections;
     }
 

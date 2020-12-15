@@ -17,7 +17,7 @@
 package de.r_schuster.networking;
 
 import de.r_schuster.data.Cave;
-import de.r_schuster.data.NetworkConnection;
+import de.r_schuster.data.Connection;
 import de.r_schuster.parser.CompassParser;
 import de.r_schuster.parser.CompassParserTest;
 import de.r_schuster.parser.SurveyParser;
@@ -43,9 +43,6 @@ public class FlatNetworkingTest {
         Cave cave = parser.parse("Kleine Scheuer", is, Charset.forName("Cp1252"));
         Networking nw = new FlatNetworking();
         nw.networking(cave);
-        for (NetworkConnection conn : cave.getConnections()) {
-            System.err.println(conn.toString());
-        }
         assertEquals(1, cave.getConnections().size());
     }
 
@@ -56,9 +53,6 @@ public class FlatNetworkingTest {
         Cave cave = parser.parse("Dreieingangshöhle", is, Charset.forName("Cp1252"));
         Networking nw = new FlatNetworking();
         nw.networking(cave);
-        for (NetworkConnection conn : cave.getConnections()) {
-            System.err.println(conn.toString());
-        }
         assertEquals(9, cave.getConnections().size());
     }
 }

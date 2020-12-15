@@ -17,7 +17,7 @@
 package de.r_schuster.networking;
 
 import de.r_schuster.data.Cave;
-import de.r_schuster.data.NetworkConnection;
+import de.r_schuster.data.Connection;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
 import java.util.HashMap;
@@ -53,6 +53,8 @@ public class FlatNetworking implements Networking {
             }
         }
 
+        Set<String> done = new HashSet<>();
+
         // compare each set of stations to all _other_ sets of stations
         Iterator<Map.Entry<String, Set<String>>> iterator = mapping.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -63,14 +65,15 @@ public class FlatNetworking implements Networking {
             while (otherator.hasNext()) {
                 Map.Entry<String, Set<String>> other = otherator.next();
                 String otherSurveyName = other.getKey();
-                if (!otherSurveyName.equals(thisSurveyName)) {
+                if (!otherSurveyName.equals(thisSurveyName) && !done.contains(otherSurveyName)) {
                     Set<String> otherStations = other.getValue();
                     Set<String> intersection = new HashSet<>(stationsInThisSurvey);
                     intersection.retainAll(otherStations);
                     for (String s : intersection) {
-                        NetworkConnection conn = new NetworkConnection(s, thisSurveyName, otherSurveyName);
+                        Connection conn = new Connection(s, thisSurveyName, s, otherSurveyName);
                         cave.addConnection(conn);
                     }
+                    done.add(thisSurveyName);
                 }
             }
         }

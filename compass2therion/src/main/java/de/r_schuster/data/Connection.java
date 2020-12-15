@@ -23,24 +23,30 @@ import java.util.Objects;
  *
  * @author roger
  */
-public class NetworkConnection implements Serializable {
+public class Connection implements Serializable {
 
-    private final String station;
+    private final String thisStation;
     private final String thisSurvey;
+    private final String otherStation;
     private final String otherSurvey;
 
-    public NetworkConnection(String station, String thisSurvey, String otherSurvey) {
-        this.station = station;
+    public Connection(String thisStation, String thisSurvey, String otherStation, String otherSurvey) {
+        this.thisStation = thisStation;
         this.thisSurvey = thisSurvey;
+        this.otherStation = otherStation;
         this.otherSurvey = otherSurvey;
     }
 
-    public String getStation() {
-        return station;
+    public String getThisStation() {
+        return thisStation;
     }
 
     public String getThisSurvey() {
         return thisSurvey;
+    }
+
+    public String getOtherStation() {
+        return otherStation;
     }
 
     public String getOtherSurvey() {
@@ -50,7 +56,10 @@ public class NetworkConnection implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.station);
+        hash = 11 * hash + Objects.hashCode(this.thisStation);
+        hash = 11 * hash + Objects.hashCode(this.thisSurvey);
+        hash = 11 * hash + Objects.hashCode(this.otherStation);
+        hash = 11 * hash + Objects.hashCode(this.otherSurvey);
         return hash;
     }
 
@@ -65,13 +74,25 @@ public class NetworkConnection implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final NetworkConnection other = (NetworkConnection) obj;
-        return Objects.equals(this.station, other.station);
+        final Connection other = (Connection) obj;
+        if (!Objects.equals(this.thisStation, other.thisStation)) {
+            return false;
+        }
+        if (!Objects.equals(this.thisSurvey, other.thisSurvey)) {
+            return false;
+        }
+        if (!Objects.equals(this.otherStation, other.otherStation)) {
+            return false;
+        }
+        if (!Objects.equals(this.otherSurvey, other.otherSurvey)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "NetworkConnection{" + "station=" + station + ", thisSurvey=" + thisSurvey + ", otherSurvey=" + otherSurvey + '}';
+        return "Connection{" + "thisStation=" + thisStation + ", thisSurvey=" + thisSurvey + ", otherStation=" + otherStation + ", otherSurvey=" + otherSurvey + '}';
     }
 
 }
