@@ -23,16 +23,18 @@ import de.r_schuster.exceptions.SurveyException;
  * @author roger
  */
 public enum ShotItems {
-    LENGTH('L'),
-    AZIMUT('A'),
-    INCLINATION('D'),
-    REVERSE_AZIMUT('a'),
-    REVERSE_INCLINATION('d');
+    LENGTH('L', "length"),
+    AZIMUT('A', "compass"),
+    INCLINATION('D', "clino"),
+    REVERSE_AZIMUT('a', "backcompass"),
+    REVERSE_INCLINATION('d', "backclino");
 
     private final char cha;
+    private final String text;
 
-    private ShotItems(char cha) {
+    private ShotItems(char cha, String text) {
         this.cha = cha;
+        this.text = text;
     }
 
     public static ShotItems getByType(char type) {
@@ -43,6 +45,10 @@ public enum ShotItems {
         }
 
         throw new SurveyException(type + " is a not supported shot item");
+    }
+
+    public String getText() {
+        return text;
     }
 
 }

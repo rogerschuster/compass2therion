@@ -18,10 +18,21 @@ package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
 import de.r_schuster.data.Connection;
+import de.r_schuster.data.Shot;
+import de.r_schuster.data.ShotItems;
+import de.r_schuster.data.Survey;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -30,6 +41,7 @@ import java.nio.charset.Charset;
 public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private static final String COMMENT = "# ";
+    private static final DateTimeFormatter SURVEY_DATE = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public TherionWriter(Writer out) {
         super(out);
@@ -52,6 +64,11 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         }
     }
 
+    private void writeln(String... str) throws IOException {
+        write(str);
+        super.newLine();
+    }
+
     @Override
     public void write(Charset charset, Cave cave) throws IOException {
 
@@ -69,6 +86,98 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             newLine();
         }
 
+        // surveys
+        for (Survey survey : cave.getSurveys()) {
+            writeSurvey(survey);
+        }
+
         flush();
+    }
+
+    private void writeSurvey(Survey survey) throws IOException {
+        writeln("survey ", survey.getName(), " -title \"", survey.getComment(), "\"");
+        commentln(survey.getCaveName());
+        commentln(survey.getComment());
+
+        writeln("centreline");
+
+        writeln("date ", SURVEY_DATE.format(survey.getDate()));
+
+        for (String team : survey.getCavers()) {
+            writeln("team \"", team, "\"");
+        }
+
+        writeln("units length ", survey.getLengthUnit().getText());
+        writeln("units compass ", survey.getAzimutUnit().getText());
+        writeln("units clino ", survey.getInclinationUnit().getText());
+        // in Compass declination always degrees
+        writeln("declination ", formatNum(survey.getDeclination()), " degrees");
+        newLine();
+
+        // data order for regular data
+        write("data normal from to ");
+        Map<Integer, ShotItems> shotItemsOrder = survey.getShotItemsOrder();
+        List<Integer> l = new ArrayList<>(shotItemsOrder.keySet());
+        Collections.sort(l);
+        for (Integer i : l) {
+            ShotItems item = shotItemsOrder.get(i);
+            if (!survey.isReverse() && item.equals(ShotItems.REVERSE_AZIMUT)) {
+                //
+            } else if (!survey.isReverse() && item.equals(ShotItems.REVERSE_INCLINATION)) {
+                //
+            } else {
+                write(item.getText(), " ");
+            }
+        }
+        newLine();
+
+        // survey shots
+        for (Shot shot : survey.getShots()) {
+            write(shot.getFrom(), " ", shot.getTo(), " ");
+
+            for (Integer i : l) {
+                ShotItems item = shotItemsOrder.get(i);
+                write(shot, item);
+            }
+
+            if (shot.getComment() != null) {
+                write("# ", shot.getComment());
+            }
+
+            newLine();
+        }
+        newLine();
+
+        writeln("endcentreline");
+        writeln("endsurvey");
+    }
+
+    private void write(Shot shot, ShotItems item) throws IOException {
+        switch (item) {
+            case LENGTH:
+                write(formatNum(shot.getLength()), " ");
+                break;
+            case AZIMUT:
+                write(formatNum(shot.getAzimut()), " ");
+                break;
+            case INCLINATION:
+                write(formatNum(shot.getInclination()), " ");
+                break;
+            case REVERSE_AZIMUT:
+                write(formatNum(shot.getReverseAzimut()), " ");
+                break;
+            case REVERSE_INCLINATION:
+                write(formatNum(shot.getReverseInclination()), " ");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private String formatNum(BigDecimal bd) {
+        if (bd == null) {
+            return "";
+        }
+        return bd.setScale(2, RoundingMode.HALF_UP).toPlainString();
     }
 }
