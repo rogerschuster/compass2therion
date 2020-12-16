@@ -152,20 +152,8 @@ public class CompassParser extends AbstractSurveyParser {
             survey.setComment(comment);
         }
 
-        String[] split = dateString.split("\\s+");
-        // workaround for some very old legacy data
-        String[] corrected = new String[split.length];
-        for (int i = 0; i < split.length; i++) {
-            String s = split[i];
-            if ("0".equals(s)) {
-                LOG.log(Level.WARNING, "Correcting invalid date {0}", dateString);
-                corrected[i] = "1";
-            } else {
-                corrected[i] = s;
-            }
-        }
-
-        dateString = String.join(" ", corrected);
+        String[] split = dateString.trim().split("\\s+");
+        dateString = String.join(" ", split);
         LocalDate date = LocalDate.parse(dateString, SURVEY_DATE_FORMATTER);
         survey.setDate(date);
     }
