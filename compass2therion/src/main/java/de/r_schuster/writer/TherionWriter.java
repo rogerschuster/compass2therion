@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,6 +44,7 @@ import java.util.Map;
  */
 public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
+    private static final Logger LOG = Logger.getLogger(TherionWriter.class.getName());
     private static final String COMMENT = "# ";
     private static final DateTimeFormatter SURVEY_DATE = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
@@ -78,6 +81,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         write("encoding ");
         write(charset.name());
         newLine();
+        newLine();
 
         // cave name
         commentln(cave.getName());
@@ -88,6 +92,9 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             newLine();
         }
 
+        newLine();
+        newLine();
+
         // surveys
         for (Survey survey : cave.getSurveys()) {
             try {
@@ -97,10 +104,16 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             }
         }
 
+        newLine();
+        newLine();
+
         flush();
     }
 
     private void writeSurvey(Survey survey) throws IOException {
+        if (survey.getName().matches("^.*\\W.*$")) {
+            LOG.log(Level.WARNING, "Survey name {0} contains non-alphanumeric characters. This may cause problems in Therion.", survey.getName());
+        }
         writeln("survey ", survey.getName(), " -title \"", survey.getComment(), "\"");
         commentln(survey.getCaveName());
         commentln(survey.getComment());
