@@ -126,7 +126,7 @@ public class CompassParser extends AbstractSurveyParser {
         }
 
         networking.networking(cave); // establishing connections between surveys
-        
+
         return cave;
     }
 
@@ -207,6 +207,8 @@ public class CompassParser extends AbstractSurveyParser {
             if (format.length < 11 || format.length > 15 || format.length == 14) {
                 throw new SurveyException("Format string invalid: " + str);
             }
+
+            survey.setDimensionsAssociation(DimensionsAssociations.FROM); // default in older Compass versions
 
             survey.setAzimutUnit(AzimutUnits.getByUnit(format[0])); // Azimut Unit
 

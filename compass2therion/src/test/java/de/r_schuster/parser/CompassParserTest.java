@@ -264,6 +264,14 @@ public class CompassParserTest {
         }
     }
 
+    @Test
+    public void defaultDimensionAssociation() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/schreiberhoehle.dat");
+        SurveyParser parser = new CompassParser();
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
+        assertEquals(DimensionsAssociations.FROM, cave.getSurveys().get(0).getDimensionsAssociation());
+    }
+
     private Networking createNetworking() {
         Networking net = new Networking() {
             @Override
