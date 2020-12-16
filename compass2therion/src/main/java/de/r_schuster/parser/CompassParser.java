@@ -210,11 +210,19 @@ public class CompassParser extends AbstractSurveyParser {
 
             survey.setDimensionsAssociation(DimensionsAssociations.FROM); // default in older Compass versions
 
-            survey.setAzimutUnit(AzimutUnits.getByUnit(format[0])); // Azimut Unit
+            AzimutUnits azUn;
+            if (AzimutUnits.getByUnit(format[0]).equals(AzimutUnits.QUADS)) {
+                azUn = AzimutUnits.DEGREES; // workaround for quads (Brunton compass and similar devices)
+                LOG.log(Level.INFO, "Converting azimut in quads to degrees. Survey {0}", survey.getName());
+            } else {
+                azUn = AzimutUnits.getByUnit(format[0]);
+            }
+            survey.setAzimutUnit(azUn); // Azimut Unit
 
             LengthUnits lenUn;
             if (LengthUnits.getByUnit(format[1]).equals(LengthUnits.FEET_INCHES)) {
                 lenUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
+                LOG.log(Level.INFO, "Converting length in feet and inches to decimal feet. Survey {0}", survey.getName());
             } else {
                 lenUn = LengthUnits.getByUnit(format[1]);
             }
@@ -223,12 +231,21 @@ public class CompassParser extends AbstractSurveyParser {
             LengthUnits dimUn;
             if (LengthUnits.getByUnit(format[2]).equals(LengthUnits.FEET_INCHES)) {
                 dimUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
+                LOG.log(Level.INFO, "Converting passage dimensions in feet and inches to decimal feet. Survey {0}", survey.getName());
             } else {
                 dimUn = LengthUnits.getByUnit(format[2]);
             }
             survey.setDimensionUnit(dimUn); // dimension unit
 
-            survey.setInclinationUnit(InclinationUnits.getByUnit(format[3])); // inclination unit
+            InclinationUnits incUn;
+            if (InclinationUnits.getByUnit(format[3]).equals(InclinationUnits.DEGREES_MINUTES)) {
+                incUn = InclinationUnits.DEGREES; // workaround for degrees and minutes
+                LOG.log(Level.INFO, "Converting inclination in degrees and minutes to degrees. Survey {0}", survey.getName());
+            } else {
+                incUn = InclinationUnits.getByUnit(format[3]);
+            }
+            survey.setInclinationUnit(incUn); // inclination unit
+
             survey.getDimensionsOrder().put(1, Dimensions.getByType(format[4])); // first passage dimension
             survey.getDimensionsOrder().put(2, Dimensions.getByType(format[5])); // second passage dimension
             survey.getDimensionsOrder().put(3, Dimensions.getByType(format[6])); // third passage dimension

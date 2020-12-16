@@ -25,7 +25,8 @@ import de.r_schuster.exceptions.SurveyException;
 public enum InclinationUnits {
     DEGREES('D', "degrees"),
     GRADS('R', "grads"),
-    PERCENT('G', "percent");
+    PERCENT('G', "percent"),
+    DEGREES_MINUTES('M', "minutes");
 
     private final char unit;
     private final String text;

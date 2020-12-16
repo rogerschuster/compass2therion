@@ -272,6 +272,22 @@ public class CompassParserTest {
         assertEquals(DimensionsAssociations.FROM, cave.getSurveys().get(0).getDimensionsAssociation());
     }
 
+    @Test
+    public void obscureUnits() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/obscure_units.dat");
+        SurveyParser parser = new CompassParser();
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
+        Survey survey = cave.getSurveys().get(0);
+        assertEquals(AzimutUnits.DEGREES, survey.getAzimutUnit());
+        assertEquals(InclinationUnits.DEGREES, survey.getInclinationUnit());
+        assertEquals(LengthUnits.FEET_DECIMAL, survey.getLengthUnit());
+        assertEquals(LengthUnits.FEET_DECIMAL, survey.getDimensionUnit());
+        assertEquals(new BigDecimal("5.83"), survey.getShots().get(0).getLength());
+        assertEquals(new BigDecimal("10.50"), survey.getShots().get(0).getInclination());
+        assertEquals(new BigDecimal("45.00"), survey.getShots().get(0).getAzimut());
+        assertEquals(new BigDecimal("10.83"), survey.getShots().get(0).getLeft());
+    }
+
     private Networking createNetworking() {
         Networking net = new Networking() {
             @Override

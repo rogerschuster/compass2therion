@@ -24,7 +24,8 @@ import de.r_schuster.exceptions.SurveyException;
  */
 public enum AzimutUnits {
     DEGREES('D', "degrees"),
-    GRADS('R', "grads");
+    GRADS('R', "grads"),
+    QUADS('Q', "quads");
 
     private final char unit;
     private final String text;
