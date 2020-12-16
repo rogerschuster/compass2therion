@@ -54,18 +54,24 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private void commentln(String str) throws IOException {
         super.write(COMMENT);
-        super.write(str);
+        if (str != null) {
+            super.write(str);
+        }
         super.newLine();
     }
 
     private void writeln(String str) throws IOException {
-        super.write(str);
+        if (str != null) {
+            super.write(str);
+        }
         super.newLine();
     }
 
     private void write(String... str) throws IOException {
         for (String s : str) {
-            super.write(s);
+            if (s != null) {
+                super.write(s);
+            }
         }
     }
 
