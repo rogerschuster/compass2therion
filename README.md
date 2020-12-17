@@ -1,5 +1,5 @@
 # compass2therion
-Converter for Compass to Therion
+## Converter for Compass to Therion
 
 This is a converter for cave surveying data. It translates data from [Compass](https://www.fountainware.com/compass/) format (`*.dat`) to the format used by [Therion](https://therion.speleo.sk/) (`*.th`).
 Compass has an user friendly editor for quickly and comfortably entering, organizing, error checking, and visualizing large amounts of survey data. Therion at the other hand has a built-in map editor with many predefined symbols required for cave mapping. Therion allows the creation of high quality cave maps.
