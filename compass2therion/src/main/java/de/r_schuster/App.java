@@ -20,36 +20,74 @@ import java.util.logging.Logger;
 public class App {
 
     private static final Logger LOG = Logger.getLogger(App.class.getName());
+    private static final String NL = System.getProperty("line.separator");
 
     public static void main(String[] args) throws IOException {
-        if (args.length != 3) {
-            LOG.warning("Application expects 3 parameters:");
-            LOG.warning("Inputfile Outputfile Cavename");
-            LOG.warning("Inputfile: Path to a file in Compass format");
-            LOG.warning("Outputfile: Path to a file in Therion format");
-            LOG.warning("Cavename: Name of the cave (in quotation marks if it contains blanks or non-alphanumeric characters)");
+        if (args.length == 0 || "-?".equals(args[0]) || "-h".equals(args[0])) {
+            printMessage();
             return;
         }
 
-        String in = args[0];
-        String out = args[1];
-        String name = args[2];
+        String inputfile = null;
+        String outputfile = null;
+        String cavename = null;
+        boolean renameSurvey = false;
+        boolean fixDate = false;
 
-        File outputfile = new File(out);
-        if (outputfile.exists()) {
-            throw new IOException("File " + out + " already exists!");
+        int len = args.length;
+        for (int i = 0; i < len; i++) {
+            String arg = args[i];
+            if ("--input".equalsIgnoreCase(arg) && len >= i + 2) {
+                inputfile = args[i + 1];
+            } else if ("--output".equalsIgnoreCase(arg) && len >= i + 2) {
+                outputfile = args[i + 1];
+            } else if ("--cavename".equalsIgnoreCase(arg) && len >= i + 2) {
+                cavename = args[i + 1];
+            } else if ("--renamesurvey".equalsIgnoreCase(arg)) {
+                renameSurvey = true;
+            } else if ("--fixdate".equalsIgnoreCase(arg)) {
+                fixDate = true;
+            }
+        }
+
+        if (inputfile == null || outputfile == null || cavename == null) {
+            printMessage();
+            return;
+        }
+
+        File outfile = new File(outputfile);
+        if (outfile.exists()) {
+            throw new IOException("File " + outputfile + " already exists!");
         }
 
         Cave cave;
-        try (InputStream is = new FileInputStream(in)) {
+        try (InputStream is = new FileInputStream(inputfile)) {
             SurveyParser parser = new CompassParser();
             Networking networking = new FlatNetworking();
-            cave = parser.parse(name, is, Charset.forName("Cp1252"), networking);
+            cave = parser.parse(cavename, is, Charset.forName("Cp1252"), networking, fixDate);
         }
 
-        try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outputfile), Charset.forName("UTF-8"))) {
+        try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outfile), Charset.forName("UTF-8"))) {
             SurveyWriter writer = new TherionWriter(wrt);
-            writer.write(Charset.forName("UTF-8"), cave);
+            writer.write(Charset.forName("UTF-8"), cave, renameSurvey);
         }
+    }
+
+    private static void printMessage() {
+        StringBuilder sb = new StringBuilder("USAGE");
+        sb.append(NL);
+        sb.append("Application expects the following arguments:").append(NL);
+        sb.append("--input [PATH TO INPUT FILE] (required)").append(NL);
+        sb.append("--output [PATH TO OUTPUT FILE] (required)").append(NL);
+        sb.append("--cavename [NAME OF CAVE] (required)").append(NL);
+        sb.append("--renamesurvey (optional)").append(NL);
+        sb.append("--fixdate (optional)").append(NL);
+        sb.append("It is recommended to put the arguments in quotation marks.").append(NL);
+        sb.append("Example: ").append(NL);
+        sb.append("--input \"c:\\caves\\cave.dat\" --output \"c:\\caves\\cave.th\" --cavename \"Big Cave\" --renamesurvey --fixdate").append(NL);
+        sb.append(NL);
+        sb.append("If you get an error message containing \"DateTimeParseException\" try the optional argument --fixdate").append(NL);
+        sb.append("If you get a warning message containing \"Survey name contains non-alphanumeric characters\" try the optional argument --renamesurvey").append(NL);
+        LOG.warning(sb.toString());
     }
 }
