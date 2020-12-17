@@ -288,6 +288,27 @@ public class CompassParserTest {
         assertEquals(new BigDecimal("10.83"), survey.getShots().get(0).getLeft());
     }
 
+    @Test
+    public void fixBrokenDate1() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/brokendate.dat");
+        SurveyParser parser = new CompassParser();
+        try {
+            parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking(), false);
+            fail("Exception expected");
+        } catch (SurveyException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void fixBrokenDate2() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/brokendate.dat");
+        SurveyParser parser = new CompassParser();
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking(), true);
+        assertEquals(LocalDate.of(1968, 10, 1), cave.getSurveys().get(0).getDate());
+        assertEquals(LocalDate.of(1900, 1, 1), cave.getSurveys().get(1).getDate());
+    }
+
     private Networking createNetworking() {
         Networking net = new Networking() {
             @Override

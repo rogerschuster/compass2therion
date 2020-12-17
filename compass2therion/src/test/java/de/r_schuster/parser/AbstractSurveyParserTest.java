@@ -18,7 +18,6 @@ package de.r_schuster.parser;
 
 import de.r_schuster.data.Cave;
 import de.r_schuster.networking.Networking;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -37,12 +36,12 @@ public class AbstractSurveyParserTest {
     public AbstractSurveyParserTest() {
         parser = new AbstractSurveyParser() {
             @Override
-            public Cave parse(String caveName, File file, Charset charset, Networking networking) throws IOException {
+            public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
-            public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
+            public Cave parse(String caveName, InputStream is, Charset charset, Networking networking, boolean fixDate) throws IOException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };

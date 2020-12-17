@@ -1,0 +1,22 @@
+DATE CAVE
+SURVEY NAME: A
+SURVEY DATE:  10  0 68
+SURVEY TEAM:
+Some cavers
+DECLINATION:   -5.20
+
+  FROM   TO    LENGTH   BEARING   DIP      LEFT       UP     DOWN    RIGHT
+
+ CSU45  1CM2    40.00   310.00    -0.50     3.50     0.00     0.00     3.50
+
+DATE CAVE
+SURVEY NAME: B
+SURVEY DATE:  0  0 0
+SURVEY TEAM:
+Some cavers
+DECLINATION:   -5.20
+
+  FROM   TO    LENGTH   BEARING   DIP      LEFT       UP     DOWN    RIGHT
+
+ 1CM2  2CM1    40.00   310.00    -0.50     3.50     0.00     0.00     3.50
+

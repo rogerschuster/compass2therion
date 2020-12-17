@@ -8,8 +8,10 @@ import de.r_schuster.parser.SurveyParser;
 import de.r_schuster.writer.SurveyWriter;
 import de.r_schuster.writer.TherionWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -38,9 +40,12 @@ public class App {
             throw new IOException("File " + out + " already exists!");
         }
 
-        SurveyParser parser = new CompassParser();
-        Networking networking = new FlatNetworking();
-        Cave cave = parser.parse(name, new File(in), Charset.forName("Cp1252"), networking);
+        Cave cave;
+        try (InputStream is = new FileInputStream(in)) {
+            SurveyParser parser = new CompassParser();
+            Networking networking = new FlatNetworking();
+            cave = parser.parse(name, is, Charset.forName("Cp1252"), networking);
+        }
 
         try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outputfile), Charset.forName("UTF-8"))) {
             SurveyWriter writer = new TherionWriter(wrt);

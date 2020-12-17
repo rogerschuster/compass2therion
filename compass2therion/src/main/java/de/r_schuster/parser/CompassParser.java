@@ -28,8 +28,6 @@ import de.r_schuster.data.Survey;
 import de.r_schuster.exceptions.SurveyException;
 import de.r_schuster.networking.Networking;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -68,14 +66,12 @@ public class CompassParser extends AbstractSurveyParser {
     private static final BigDecimal NINE_NINE_NINE = new BigDecimal("-999.00");
 
     @Override
-    public Cave parse(String caveName, File file, Charset charset, Networking networking) throws IOException {
-        try (InputStream is = new FileInputStream(file)) {
-            return parse(caveName, is, charset, networking);
-        }
+    public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
+        return parse(caveName, is, charset, networking, false);
     }
 
     @Override
-    public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
+    public Cave parse(String caveName, InputStream is, Charset charset, Networking networking, boolean fixDate) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
 
         Cave cave = new Cave(caveName);
@@ -96,7 +92,7 @@ public class CompassParser extends AbstractSurveyParser {
                     parseSurveyName(survey, line);
                 } // third line: Survey date and comment
                 else if (lno == 3) {
-                    parseSurveyDateAndComment(survey, line);
+                    parseSurveyDateAndComment(survey, line, fixDate);
                 } // fourth line: nothing
                 // fifth line: survey team
                 else if (lno == 5) {
@@ -137,7 +133,7 @@ public class CompassParser extends AbstractSurveyParser {
         survey.setName(name);
     }
 
-    private void parseSurveyDateAndComment(final Survey survey, final String line) {
+    private void parseSurveyDateAndComment(final Survey survey, final String line, boolean fixDate) {
         final int idx1 = line.indexOf(SURVEY_DATE_MATCH);
         final int idx2 = line.indexOf(SURVEY_COMMENT_MATCH);
 
@@ -153,6 +149,22 @@ public class CompassParser extends AbstractSurveyParser {
         }
 
         String[] split = dateString.trim().split("\\s+");
+        // fix date in legacy data
+        if (fixDate) {
+            String[] corrected = new String[split.length];
+            for (int i = 0; i < split.length; i++) {
+                String part = split[i];
+                if (part.matches("^0*$")) {
+                    corrected[i] = "1";
+                } else {
+                    corrected[i] = part;
+                }
+            }
+            if (corrected.length == 3 && "1".equals(corrected[2])) {
+                corrected[2] = "1900";
+            }
+            split = corrected;
+        }
         dateString = String.join(" ", split);
         LocalDate date = LocalDate.parse(dateString, SURVEY_DATE_FORMATTER);
         survey.setDate(date);
