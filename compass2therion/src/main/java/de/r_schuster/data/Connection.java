@@ -25,15 +25,31 @@ import java.util.Objects;
  */
 public class Connection implements Serializable {
 
-    private final String thisStation;
-    private final String thisSurvey;
-    private final String otherStation;
-    private final String otherSurvey;
+    private String thisStation;
+    private String thisSurvey;
+    private String otherStation;
+    private String otherSurvey;
 
     public Connection(String thisStation, String thisSurvey, String otherStation, String otherSurvey) {
         this.thisStation = thisStation;
         this.thisSurvey = thisSurvey;
         this.otherStation = otherStation;
+        this.otherSurvey = otherSurvey;
+    }
+
+    public void setThisStation(String thisStation) {
+        this.thisStation = thisStation;
+    }
+
+    public void setThisSurvey(String thisSurvey) {
+        this.thisSurvey = thisSurvey;
+    }
+
+    public void setOtherStation(String otherStation) {
+        this.otherStation = otherStation;
+    }
+
+    public void setOtherSurvey(String otherSurvey) {
         this.otherSurvey = otherSurvey;
     }
 

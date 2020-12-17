@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,13 +52,16 @@ public class TherionWriterTest {
         Charset charset = Charset.forName("UTF-8");
         StringWriter out = new StringWriter();
         SurveyWriter wrt = new TherionWriter(out);
-        wrt.write(charset, cave);
+        wrt.write(charset, cave, true);
 
         String toString = out.toString();
         System.err.println(toString);
 
-        String[] split = toString.split(newline);
-        assertEquals("encoding UTF-8", split[0]);
+        List<String> asList = Arrays.asList(toString.split(newline));
+        assertEquals("encoding UTF-8", asList.get(0));
+        assertTrue(asList.contains("equate 5@2 5@1"));
+        assertTrue(asList.contains("survey 1 -title \"Katasternummer 7225/10\""));
+        assertTrue(asList.contains("survey 2 -title \"Just a test\""));
     }
 
     @Test

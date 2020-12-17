@@ -82,6 +82,15 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     @Override
     public void write(Charset charset, Cave cave) throws IOException {
+        write(charset, cave, false);
+    }
+
+    @Override
+    public void write(Charset charset, Cave cave, boolean renameSurveys) throws IOException {
+
+        if (renameSurveys) {
+            renameSurveys(cave);
+        }
 
         // mode line for editor
         write("encoding ");
@@ -254,5 +263,33 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             return "";
         }
         return bd.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    }
+
+    private void renameSurveys(Cave cave) {
+        int cnt = 1;
+
+        for (Survey survey : cave.getSurveys()) {
+            String oldName = survey.getName();
+            if (oldName.matches("^.*\\W.*$")) {
+                String newName = String.valueOf(cnt);
+                LOG.log(Level.INFO, "Renaming old survey {0} to new survey name {1}", new Object[]{oldName, newName});
+                // renaming survey
+                survey.setName(newName);
+
+                // renaming connections
+                for (Connection conn : cave.getConnections()) {
+                    if (conn.getThisSurvey().equals(oldName)) {
+                        conn.setThisSurvey(newName);
+                    }
+                    if (conn.getOtherSurvey().equals(oldName)) {
+                        conn.setOtherSurvey(newName);
+                    }
+                }
+
+                cnt++;
+
+            }
+
+        }
     }
 }

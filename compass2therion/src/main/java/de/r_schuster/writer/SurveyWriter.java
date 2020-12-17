@@ -26,6 +26,7 @@ import java.nio.charset.Charset;
  */
 public interface SurveyWriter {
 
+    void write(Charset charset, Cave cave, boolean renameSurveys) throws IOException;
     void write(Charset charset, Cave cave) throws IOException;
 
 }
