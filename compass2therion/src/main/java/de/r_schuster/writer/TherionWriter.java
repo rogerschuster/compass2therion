@@ -138,14 +138,18 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         writeln("date ", SURVEY_DATE.format(survey.getDate()));
 
         for (String team : survey.getCavers()) {
-            writeln("team \"", team, "\"");
+            if (team != null && !team.isEmpty()) {
+                writeln("team \"", team, "\"");
+            }
         }
 
         writeln("units length ", survey.getLengthUnit().getText());
         writeln("units compass ", survey.getAzimutUnit().getText());
         writeln("units clino ", survey.getInclinationUnit().getText());
         // in Compass declination always degrees
-        writeln("declination ", formatNum(survey.getDeclination()), " degrees");
+        if (survey.getDeclination() != null) {
+            writeln("declination ", formatNum(survey.getDeclination()), " degrees");
+        }
         newLine();
 
         // data order for regular data
