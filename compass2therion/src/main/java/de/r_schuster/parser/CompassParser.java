@@ -38,6 +38,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -162,6 +163,9 @@ public class CompassParser extends AbstractSurveyParser {
             }
             if (corrected.length == 3 && "1".equals(corrected[2])) {
                 corrected[2] = "1900";
+            }
+            if (!Arrays.equals(split, corrected)) {
+                LOG.log(Level.INFO, "Date fixed in survey {0}", survey.getName());
             }
             split = corrected;
         }
