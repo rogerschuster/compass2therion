@@ -272,6 +272,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         int cnt = 1;
 
         for (Survey survey : cave.getSurveys()) {
+            // FIXME invalid station names also need renaming
             String oldName = survey.getName();
             if (oldName.matches("^.*\\W.*$")) {
                 String newName = String.valueOf(cnt);
