@@ -18,8 +18,6 @@ The usage is quite simple. Open a command window / console, change to the locati
 
 Optional arguments:
 
-`--fixdate (tries to fix invalid survey dates)`
-
 `--renamesurvey (renames surveys with non-alphanumeric characters)`
 
 Replace the section `<VERSION>` in the above command with the real version number of the downloaded program file. I recommend to put each of the three required parameters in quotation marks. If you omit all parameters the program prints a help message.
