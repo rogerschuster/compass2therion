@@ -18,7 +18,6 @@ package de.r_schuster.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,7 @@ public class Survey implements Serializable {
     private String caveName;
     private String name;
     private String comment;
-    private LocalDate date;
+    private SurveyDate date;
     private BigDecimal declination;
     private InclinationUnits inclinationUnit;
     private AzimutUnits azimutUnit;
@@ -90,11 +89,11 @@ public class Survey implements Serializable {
         this.comment = comment;
     }
 
-    public LocalDate getDate() {
+    public SurveyDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(SurveyDate date) {
         this.date = date;
     }
 

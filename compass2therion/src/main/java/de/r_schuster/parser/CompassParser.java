@@ -25,6 +25,7 @@ import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
+import de.r_schuster.data.SurveyDate;
 import de.r_schuster.exceptions.SurveyException;
 import de.r_schuster.networking.Networking;
 import java.io.BufferedReader;
@@ -34,12 +35,6 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,10 +48,6 @@ public class CompassParser extends AbstractSurveyParser {
 
     private static final String FORM_FEED = "\u000C";
     private static final String SUB = "\u001A";
-    private static final DateTimeFormatter SURVEY_DATE_FORMATTER = new DateTimeFormatterBuilder()
-            .appendPattern("M d ")
-            .appendValueReduced(ChronoField.YEAR, 2, 4, 1900)
-            .toFormatter(Locale.forLanguageTag("en-US"));
     private static final String SURVEY_NAME_MATCH = "SURVEY NAME:";
     private static final String SURVEY_DATE_MATCH = "SURVEY DATE:";
     private static final String SURVEY_COMMENT_MATCH = "COMMENT:"; // comment is optional in COMPASS
@@ -68,11 +59,6 @@ public class CompassParser extends AbstractSurveyParser {
 
     @Override
     public Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException {
-        return parse(caveName, is, charset, networking, false);
-    }
-
-    @Override
-    public Cave parse(String caveName, InputStream is, Charset charset, Networking networking, boolean fixDate) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
 
         Cave cave = new Cave(caveName);
@@ -93,7 +79,7 @@ public class CompassParser extends AbstractSurveyParser {
                     parseSurveyName(survey, line);
                 } // third line: Survey date and comment
                 else if (lno == 3) {
-                    parseSurveyDateAndComment(survey, line, fixDate);
+                    parseSurveyDateAndComment(survey, line);
                 } // fourth line: nothing
                 // fifth line: survey team
                 else if (lno == 5) {
@@ -134,7 +120,7 @@ public class CompassParser extends AbstractSurveyParser {
         survey.setName(name);
     }
 
-    private void parseSurveyDateAndComment(final Survey survey, final String line, boolean fixDate) {
+    private void parseSurveyDateAndComment(final Survey survey, final String line) {
         final int idx1 = line.indexOf(SURVEY_DATE_MATCH);
         final int idx2 = line.indexOf(SURVEY_COMMENT_MATCH);
 
@@ -149,28 +135,11 @@ public class CompassParser extends AbstractSurveyParser {
             survey.setComment(comment);
         }
 
-        String[] split = dateString.trim().split("\\s+");
-        // fix date in legacy data
-        if (fixDate) {
-            String[] corrected = new String[split.length];
-            for (int i = 0; i < split.length; i++) {
-                String part = split[i];
-                if (part.matches("^0*$")) {
-                    corrected[i] = "1";
-                } else {
-                    corrected[i] = part;
-                }
-            }
-            if (corrected.length == 3 && "1".equals(corrected[2])) {
-                corrected[2] = "1900";
-            }
-            if (!Arrays.equals(split, corrected)) {
-                LOG.log(Level.INFO, "Date fixed in survey {0}", survey.getName());
-            }
-            split = corrected;
+        String[] split = dateString.trim().split("\\s+"); // month, day, year
+        if (split.length != 3) {
+            throw new SurveyException("Invalid survey date " + dateString);
         }
-        dateString = String.join(" ", split);
-        LocalDate date = LocalDate.parse(dateString, SURVEY_DATE_FORMATTER);
+        SurveyDate date = new SurveyDate(Integer.parseInt(split[2]), Integer.parseInt(split[0]), Integer.parseInt(split[1]));
         survey.setDate(date);
     }
 

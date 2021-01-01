@@ -32,7 +32,6 @@ public class App {
         String outputfile = null;
         String cavename = null;
         boolean renameSurvey = false;
-        boolean fixDate = false;
 
         int len = args.length;
         for (int i = 0; i < len; i++) {
@@ -45,8 +44,6 @@ public class App {
                 cavename = args[i + 1];
             } else if ("--renamesurvey".equalsIgnoreCase(arg)) {
                 renameSurvey = true;
-            } else if ("--fixdate".equalsIgnoreCase(arg)) {
-                fixDate = true;
             }
         }
 
@@ -64,7 +61,7 @@ public class App {
         try (InputStream is = new FileInputStream(inputfile)) {
             SurveyParser parser = new CompassParser();
             Networking networking = new FlatNetworking();
-            cave = parser.parse(cavename, is, Charset.forName("Cp1252"), networking, fixDate);
+            cave = parser.parse(cavename, is, Charset.forName("Cp1252"), networking);
         }
 
         try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outfile), Charset.forName("UTF-8"))) {
@@ -86,7 +83,6 @@ public class App {
         sb.append("Example: ").append(NL);
         sb.append("--input \"c:\\caves\\cave.dat\" --output \"c:\\caves\\cave.th\" --cavename \"Big Cave\" --renamesurvey --fixdate").append(NL);
         sb.append(NL);
-        sb.append("If you get an error message containing \"DateTimeParseException\" try the optional argument --fixdate").append(NL);
         sb.append("If you get a warning message containing \"Survey name contains non-alphanumeric characters\" try the optional argument --renamesurvey").append(NL);
         LOG.warning(sb.toString());
     }

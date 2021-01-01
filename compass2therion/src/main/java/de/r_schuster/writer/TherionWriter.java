@@ -23,6 +23,7 @@ import de.r_schuster.data.DimensionsAssociations;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.ShotItems;
 import de.r_schuster.data.Survey;
+import de.r_schuster.data.SurveyDate;
 import de.r_schuster.exceptions.SurveyException;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +46,6 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private static final Logger LOG = Logger.getLogger(TherionWriter.class.getName());
     private static final String COMMENT = "# ";
-    private static final DateTimeFormatter SURVEY_DATE = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public TherionWriter(Writer out) {
         super(out);
@@ -135,7 +134,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         writeln("centreline");
 
-        writeln("date ", SURVEY_DATE.format(survey.getDate()));
+        writeDate(survey);
 
         for (String team : survey.getCavers()) {
             if (team != null && !team.isEmpty()) {
@@ -295,5 +294,35 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             }
 
         }
+    }
+
+    private void writeDate(Survey survey) throws IOException {
+        SurveyDate date = survey.getDate();
+        if (date.getDay() == 0 && date.getMonth() == 0 && date.getYear() == 0) {
+            return; // empty date, do nothing
+        }
+
+        write("date ");
+
+        if (date.getYear() >= 0 && date.getYear() <= 50) {
+            int upd = date.getYear() + 2000;
+            LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
+            write(String.valueOf(upd));
+        } else if (date.getYear() > 50 && date.getYear() < 100) {
+            int upd = date.getYear() + 1900;
+            LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
+            write(String.valueOf(upd));
+        } else {
+            write(String.valueOf(date.getYear()));
+        }
+
+        if (date.getMonth() != 0) {
+            write("." + date.getMonth());
+            if (date.getDay() != 0) {
+                write("." + date.getDay());
+            }
+        }
+
+        newLine();
     }
 }

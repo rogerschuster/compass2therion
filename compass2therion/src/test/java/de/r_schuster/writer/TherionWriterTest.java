@@ -82,4 +82,26 @@ public class TherionWriterTest {
         String[] split = toString.split(newline);
         assertEquals("encoding UTF-8", split[0]);
     }
+
+    @Test
+    public void dates() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/dates.dat");
+        SurveyParser parser = new CompassParser();
+        Networking nw = new FlatNetworking();
+        Cave cave = parser.parse("Dreieingangshöhle", is, Charset.forName("Cp1252"), nw);
+
+        Charset charset = Charset.forName("UTF-8");
+        StringWriter out = new StringWriter();
+        SurveyWriter wrt = new TherionWriter(out);
+        wrt.write(charset, cave);
+
+        String toString = out.toString();
+        System.err.println(toString);
+        assertTrue(toString.contains("date 2021.2.1"));
+        assertTrue(toString.contains("date 2021.1"));
+        assertTrue(toString.contains("date 2022"));
+        assertTrue(toString.contains("date 2023"));
+        assertTrue(toString.contains("date 1968"));
+        assertFalse(toString.contains("date 1900.0.0"));
+    }
 }

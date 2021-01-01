@@ -40,10 +40,6 @@ public class AbstractSurveyParserTest {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
-            @Override
-            public Cave parse(String caveName, InputStream is, Charset charset, Networking networking, boolean fixDate) throws IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
         };
     }
 

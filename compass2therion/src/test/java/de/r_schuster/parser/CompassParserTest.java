@@ -25,13 +25,13 @@ import de.r_schuster.data.InclinationUnits;
 import de.r_schuster.data.LengthUnits;
 import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
+import de.r_schuster.data.SurveyDate;
 import de.r_schuster.exceptions.SurveyException;
 import de.r_schuster.networking.Networking;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +57,7 @@ public class CompassParserTest {
         Survey survey1 = cave.getSurveys().get(0);
         assertEquals("Höhle", survey1.getCaveName());
         assertEquals("10.1", survey1.getName());
-        assertEquals(LocalDate.of(2020, 6, 14), survey1.getDate());
+        assertEquals(new SurveyDate(2020, 6, 14), survey1.getDate());
         assertEquals("Katasternummer 7225/10", survey1.getComment());
         assertTrue(survey1.getCavers().contains("I. Sachsenmaier"));
         assertTrue(survey1.getCavers().contains("R. Schuster"));
@@ -135,7 +135,7 @@ public class CompassParserTest {
         Survey survey2 = cave.getSurveys().get(1);
         assertEquals("Höhle", survey2.getCaveName());
         assertEquals("10.2", survey2.getName());
-        assertEquals(LocalDate.of(2020, 12, 13), survey2.getDate());
+        assertEquals(new SurveyDate(2020, 12, 13), survey2.getDate());
         assertEquals("Just a test", survey2.getComment());
         assertTrue(survey2.getCavers().contains("Häberle"));
         assertTrue(survey2.getCavers().contains("Eisele"));
@@ -207,7 +207,7 @@ public class CompassParserTest {
         assertEquals(3, cave.getSurveys().size());
 
         Survey survey1 = cave.getSurveys().get(0);
-        assertEquals(LocalDate.of(1968, 9, 21), survey1.getDate());
+        assertEquals(new SurveyDate(68, 9, 21), survey1.getDate());
         assertEquals(AzimutUnits.DEGREES, survey1.getAzimutUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey1.getLengthUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey1.getDimensionUnit());
@@ -222,7 +222,7 @@ public class CompassParserTest {
         assertFalse(survey1.isReverse());
 
         Survey survey2 = cave.getSurveys().get(1);
-        assertEquals(LocalDate.of(1996, 9, 28), survey2.getDate());
+        assertEquals(new SurveyDate(96, 9, 28), survey2.getDate());
         assertEquals(AzimutUnits.DEGREES, survey2.getAzimutUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey2.getLengthUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey2.getDimensionUnit());
@@ -237,7 +237,7 @@ public class CompassParserTest {
         assertFalse(survey2.isReverse());
 
         Survey survey3 = cave.getSurveys().get(2);
-        assertEquals(LocalDate.of(1997, 10, 12), survey3.getDate());
+        assertEquals(new SurveyDate(1997, 10, 12), survey3.getDate());
         assertEquals(AzimutUnits.DEGREES, survey3.getAzimutUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey3.getLengthUnit());
         assertEquals(LengthUnits.FEET_DECIMAL, survey3.getDimensionUnit());
@@ -289,24 +289,24 @@ public class CompassParserTest {
     }
 
     @Test
-    public void fixBrokenDate1() throws IOException {
+    public void incompleteDate() throws IOException {
         InputStream is = CompassParserTest.class.getResourceAsStream("/parser/brokendate.dat");
         SurveyParser parser = new CompassParser();
-        try {
-            parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking(), false);
-            fail("Exception expected");
-        } catch (SurveyException e) {
-            assertTrue(true);
-        }
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
+        assertEquals(new SurveyDate(68, 10, 0), cave.getSurveys().get(0).getDate());
+        assertEquals(new SurveyDate(0, 0, 0), cave.getSurveys().get(1).getDate());
     }
 
     @Test
-    public void fixBrokenDate2() throws IOException {
-        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/brokendate.dat");
+    public void incompleteDate2() throws IOException {
+        InputStream is = CompassParserTest.class.getResourceAsStream("/parser/dates.dat");
         SurveyParser parser = new CompassParser();
-        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking(), true);
-        assertEquals(LocalDate.of(1968, 10, 1), cave.getSurveys().get(0).getDate());
-        assertEquals(LocalDate.of(1900, 1, 1), cave.getSurveys().get(1).getDate());
+        Cave cave = parser.parse("Test Hole", is, Charset.forName("Cp1252"), createNetworking());
+        assertEquals(new SurveyDate(2021, 2, 1), cave.getSurveys().get(0).getDate());
+        assertEquals(new SurveyDate(2021, 1, 0), cave.getSurveys().get(1).getDate());
+        assertEquals(new SurveyDate(22, 0, 0), cave.getSurveys().get(2).getDate());
+        assertEquals(new SurveyDate(2023, 0, 0), cave.getSurveys().get(3).getDate());
+        assertEquals(new SurveyDate(0, 0, 0), cave.getSurveys().get(4).getDate());
     }
 
     private Networking createNetworking() {

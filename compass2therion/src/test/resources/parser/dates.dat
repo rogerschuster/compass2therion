@@ -1,0 +1,67 @@
+Test
+SURVEY NAME: mdy
+SURVEY DATE: 2 1 2021  COMMENT:Complete survey date month, day, year
+SURVEY TEAM: 
+a
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                mdy1                 mdy2     1.00     0.00     1.00     0.00     0.00     0.00     0.00
+
+Test
+SURVEY NAME: my
+SURVEY DATE: 1 0 2021  COMMENT:Month and year
+SURVEY TEAM: 
+b
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                 my1                  my2     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+
+Test
+SURVEY NAME: y
+SURVEY DATE: 0 0   22  COMMENT:year only two digits
+SURVEY TEAM: 
+c
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                  y1                   y2     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+
+Test
+SURVEY NAME: yyyy
+SURVEY DATE: 0 0 2023  COMMENT:year only 4 digits
+SURVEY TEAM: 
+d
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+               yyyy1                yyyy2     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+
+Test
+SURVEY NAME: no
+SURVEY DATE: 0 0    0  COMMENT:empty date
+SURVEY TEAM: 
+e
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                 no1                  no2     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+
+Test
+SURVEY NAME: yo
+SURVEY DATE: 0 0   68  COMMENT:year only two digits
+SURVEY TEAM: 
+c
+DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  CORRECTIONS2:  0.00 0.00
+
+                FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
+
+                  y1                   y2     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+
+

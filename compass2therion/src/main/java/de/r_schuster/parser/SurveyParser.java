@@ -30,6 +30,4 @@ public interface SurveyParser {
 
     Cave parse(String caveName, InputStream is, Charset charset, Networking networking) throws IOException;
 
-    Cave parse(String caveName, InputStream is, Charset charset, Networking networking, boolean fixDate) throws IOException;
-
 }
