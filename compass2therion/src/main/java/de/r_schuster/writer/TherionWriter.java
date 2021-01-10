@@ -134,7 +134,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         writeln("centreline");
 
-        writeDate(survey);
+        writeDate(survey.getDate());
 
         for (String team : survey.getCavers()) {
             if (team != null && !team.isEmpty()) {
@@ -268,7 +268,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         return bd.setScale(2, RoundingMode.HALF_UP).toPlainString();
     }
 
-    private void renameSurveys(Cave cave) {
+    protected void renameSurveys(Cave cave) {
         int cnt = 1;
 
         for (Survey survey : cave.getSurveys()) {
@@ -297,33 +297,33 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         }
     }
 
-    private void writeDate(Survey survey) throws IOException {
-        SurveyDate date = survey.getDate();
-        if (date.getDay() == 0 && date.getMonth() == 0 && date.getYear() == 0) {
-            return; // empty date, do nothing
-        }
+    protected void writeDate(SurveyDate date) throws IOException {
 
-        write("date ");
+        if (date != null && date.getYear() != 0) {
 
-        if (date.getYear() >= 0 && date.getYear() <= 50) {
-            int upd = date.getYear() + 2000;
-            LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
-            write(String.valueOf(upd));
-        } else if (date.getYear() > 50 && date.getYear() < 100) {
-            int upd = date.getYear() + 1900;
-            LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
-            write(String.valueOf(upd));
-        } else {
-            write(String.valueOf(date.getYear()));
-        }
+            write("date ");
 
-        if (date.getMonth() != 0) {
-            write("." + date.getMonth());
-            if (date.getDay() != 0) {
-                write("." + date.getDay());
+            if (date.getYear() >= 0 && date.getYear() <= 50) {
+                int upd = date.getYear() + 2000;
+                LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
+                write(String.valueOf(upd));
+            } else if (date.getYear() > 50 && date.getYear() < 100) {
+                int upd = date.getYear() + 1900;
+                LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
+                write(String.valueOf(upd));
+            } else {
+                write(String.valueOf(date.getYear()));
             }
+
+            if (date.getMonth() != 0) {
+                write("." + date.getMonth());
+                if (date.getDay() != 0) {
+                    write("." + date.getDay());
+                }
+            }
+
+            newLine();
         }
 
-        newLine();
     }
 }

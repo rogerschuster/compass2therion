@@ -17,6 +17,7 @@
 package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.SurveyDate;
 import de.r_schuster.networking.FlatNetworking;
 import de.r_schuster.networking.Networking;
 import de.r_schuster.parser.CompassParser;
@@ -103,5 +104,79 @@ public class TherionWriterTest {
         assertTrue(toString.contains("date 2023"));
         assertTrue(toString.contains("date 1968"));
         assertFalse(toString.contains("date 1900.0.0"));
+    }
+
+    @Test
+    public void dateNull() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        thw.writeDate(null);
+        thw.flush();
+        assertTrue(out.toString().isEmpty());
+    }
+
+    @Test
+    public void date0() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(0, 1, 1);
+        thw.writeDate(date);
+        thw.flush();
+        assertTrue(out.toString().isEmpty());
+    }
+
+    @Test
+    public void yearUnder() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(30, 1, 1);
+        thw.writeDate(date);
+        thw.flush();
+        String toString = out.toString();
+        assertEquals("date 2030.1.1" + newline, toString);
+    }
+
+    @Test
+    public void yearOver() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(51, 1, 1);
+        thw.writeDate(date);
+        thw.flush();
+        String toString = out.toString();
+        assertEquals("date 1951.1.1" + newline, toString);
+    }
+
+    @Test
+    public void yearFourdigits() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(2001, 1, 1);
+        thw.writeDate(date);
+        thw.flush();
+        String toString = out.toString();
+        assertEquals("date 2001.1.1" + newline, toString);
+    }
+
+    @Test
+    public void yearOnly() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(2001, 0, 0);
+        thw.writeDate(date);
+        thw.flush();
+        String toString = out.toString();
+        assertEquals("date 2001" + newline, toString);
+    }
+
+    @Test
+    public void yearMonth() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter thw = new TherionWriter(out);
+        SurveyDate date = new SurveyDate(2001, 1, 0);
+        thw.writeDate(date);
+        thw.flush();
+        String toString = out.toString();
+        assertEquals("date 2001.1" + newline, toString);
     }
 }
