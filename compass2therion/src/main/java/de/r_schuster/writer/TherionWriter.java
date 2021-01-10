@@ -305,12 +305,10 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
             if (date.getYear() >= 0 && date.getYear() <= 50) {
                 int upd = date.getYear() + 2000;
-                LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
-                write(String.valueOf(upd));
+                writeTwoDigitDate(upd, date);
             } else if (date.getYear() > 50 && date.getYear() < 100) {
                 int upd = date.getYear() + 1900;
-                LOG.log(Level.FINE, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), upd});
-                write(String.valueOf(upd));
+                writeTwoDigitDate(upd, date);
             } else {
                 write(String.valueOf(date.getYear()));
             }
@@ -325,5 +323,11 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
             newLine();
         }
 
+    }
+
+    private void writeTwoDigitDate(int upd, SurveyDate date) throws IOException {
+        String val = String.valueOf(upd);
+        LOG.log(Level.INFO, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), val});
+        write(val);
     }
 }
