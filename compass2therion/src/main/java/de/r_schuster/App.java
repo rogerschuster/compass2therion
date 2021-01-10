@@ -78,10 +78,9 @@ public class App {
         sb.append("--output [PATH TO OUTPUT FILE] (required)").append(NL);
         sb.append("--cavename [NAME OF CAVE] (required)").append(NL);
         sb.append("--renamesurvey (optional)").append(NL);
-        sb.append("--fixdate (optional)").append(NL);
         sb.append("It is recommended to put the arguments in quotation marks.").append(NL);
         sb.append("Example: ").append(NL);
-        sb.append("--input \"c:\\caves\\cave.dat\" --output \"c:\\caves\\cave.th\" --cavename \"Big Cave\" --renamesurvey --fixdate").append(NL);
+        sb.append("--input \"c:\\caves\\cave.dat\" --output \"c:\\caves\\cave.th\" --cavename \"Big Cave\" --renamesurvey").append(NL);
         sb.append(NL);
         sb.append("If you get a warning message containing \"Survey name contains non-alphanumeric characters\" try the optional argument --renamesurvey").append(NL);
         LOG.warning(sb.toString());
