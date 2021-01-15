@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -46,6 +47,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private static final Logger LOG = Logger.getLogger(TherionWriter.class.getName());
     private static final String COMMENT = "# ";
+    private static final Pattern SPECIAL = Pattern.compile("^.*\\W.*$");
 
     public TherionWriter(Writer out) {
         super(out);
@@ -125,7 +127,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
     }
 
     private void writeSurvey(Survey survey) throws IOException {
-        if (survey.getName().matches("^.*\\W.*$")) {
+        if (SPECIAL.matcher(survey.getName()).matches()) {
             LOG.log(Level.WARNING, "Survey name {0} contains non-alphanumeric characters. This may cause problems in Therion.", survey.getName());
         }
         writeln("survey ", survey.getName(), " -title \"", survey.getComment(), "\"");
@@ -274,7 +276,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         for (Survey survey : cave.getSurveys()) {
             // FIXME invalid station names also need renaming
             String oldName = survey.getName();
-            if (oldName.matches("^.*\\W.*$")) {
+            if (SPECIAL.matcher(oldName).matches()) {
                 String newName = String.valueOf(cnt);
                 LOG.log(Level.INFO, "Renaming old survey {0} to new survey name {1}", new Object[]{oldName, newName});
                 // renaming survey
