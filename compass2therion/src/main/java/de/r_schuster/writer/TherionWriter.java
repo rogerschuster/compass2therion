@@ -35,9 +35,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -172,6 +174,12 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         // survey shots
         for (Shot shot : survey.getShots()) {
+            if (SPECIAL.matcher(shot.getFrom()).matches()) {
+                LOG.log(Level.WARNING, "Station name {0} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getFrom());
+            }
+            if (SPECIAL.matcher(shot.getTo()).matches()) {
+                LOG.log(Level.WARNING, "Station name {0} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getTo());
+            }
             write(shot.getFrom(), " ", shot.getTo(), " ");
 
             for (Integer i : l) {
@@ -273,29 +281,35 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
     protected void renameSurveys(Cave cave) {
         int cnt = 1;
 
+        Set<String> surveyNames = cave.getSurveys().stream().map(Survey::getName).collect(Collectors.toSet());
+
         for (Survey survey : cave.getSurveys()) {
-            // FIXME invalid station names also need renaming
-            String oldName = survey.getName();
-            if (SPECIAL.matcher(oldName).matches()) {
-                String newName = String.valueOf(cnt);
-                LOG.log(Level.INFO, "Renaming old survey {0} to new survey name {1}", new Object[]{oldName, newName});
+            String oldSurveyName = survey.getName();
+            if (SPECIAL.matcher(oldSurveyName).matches()) {
+                String newSurveyName = String.valueOf(cnt);
+                // avoiding name collisions
+                while (surveyNames.contains(newSurveyName)) {
+                    cnt++;
+                    newSurveyName = String.valueOf(cnt);
+                }
+                surveyNames.remove(oldSurveyName);
+                surveyNames.add(newSurveyName);
+                LOG.log(Level.INFO, "Renaming old survey {0} to new survey name {1}", new Object[]{oldSurveyName, newSurveyName});
                 // renaming survey
-                survey.setName(newName);
+                survey.setName(newSurveyName);
 
                 // renaming connections
                 for (Connection conn : cave.getConnections()) {
-                    if (conn.getThisSurvey().equals(oldName)) {
-                        conn.setThisSurvey(newName);
+                    if (conn.getThisSurvey().equals(oldSurveyName)) {
+                        conn.setThisSurvey(newSurveyName);
                     }
-                    if (conn.getOtherSurvey().equals(oldName)) {
-                        conn.setOtherSurvey(newName);
+                    if (conn.getOtherSurvey().equals(oldSurveyName)) {
+                        conn.setOtherSurvey(newSurveyName);
                     }
                 }
 
-                cnt++;
-
             }
-
+            renameStations(cave, survey);
         }
     }
 
@@ -331,5 +345,9 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         String val = String.valueOf(upd);
         LOG.log(Level.INFO, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), val});
         write(val);
+    }
+
+    protected void renameStations(Cave cave, Survey survey) {
+        // TODO invalid station names also need renaming
     }
 }

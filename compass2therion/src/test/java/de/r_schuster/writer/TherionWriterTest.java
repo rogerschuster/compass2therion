@@ -17,6 +17,8 @@
 package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
+import de.r_schuster.data.Shot;
+import de.r_schuster.data.Survey;
 import de.r_schuster.data.SurveyDate;
 import de.r_schuster.networking.FlatNetworking;
 import de.r_schuster.networking.Networking;
@@ -178,5 +180,32 @@ public class TherionWriterTest {
         thw.flush();
         String toString = out.toString();
         assertEquals("date 2001.1" + newline, toString);
+    }
+
+    @Test
+    public void avoidSurveyNameCollision() {
+        Cave cave = new Cave("Test");
+        Survey s1 = new Survey();
+        s1.setName("1");
+        cave.addSurvey(s1);
+
+        Survey s2 = new Survey();
+        s2.setName("?");
+        cave.addSurvey(s2);
+
+        Survey s3 = new Survey();
+        s3.setName("a");
+        cave.addSurvey(s3);
+
+        Survey s4 = new Survey();
+        s4.setName("'a");
+        cave.addSurvey(s4);
+
+        TherionWriter wrt = new TherionWriter(new StringWriter());
+        wrt.renameSurveys(cave);
+        assertEquals("1", cave.getSurveys().get(0).getName());
+        assertEquals("2", cave.getSurveys().get(1).getName());
+        assertEquals("a", cave.getSurveys().get(2).getName());
+        assertEquals("3", cave.getSurveys().get(3).getName());
     }
 }
