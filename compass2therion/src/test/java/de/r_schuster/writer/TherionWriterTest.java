@@ -17,7 +17,6 @@
 package de.r_schuster.writer;
 
 import de.r_schuster.data.Cave;
-import de.r_schuster.data.Shot;
 import de.r_schuster.data.Survey;
 import de.r_schuster.data.SurveyDate;
 import de.r_schuster.networking.FlatNetworking;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -207,5 +207,31 @@ public class TherionWriterTest {
         assertEquals("2", cave.getSurveys().get(1).getName());
         assertEquals("a", cave.getSurveys().get(2).getName());
         assertEquals("3", cave.getSurveys().get(3).getName());
+    }
+
+    @Test
+    public void renameSurvey() throws IOException {
+        Cave cave = loadCave("/writer/renamesurvey.dat", "Testcave");
+        StringWriter out = new StringWriter();
+        SurveyWriter wrt = new TherionWriter(out);
+        wrt.write(StandardCharsets.UTF_8, cave, true);
+        String toString = out.toString();
+
+        assertTrue(toString.contains("survey 3 -title")); // a+ renamed to 3
+        assertTrue(toString.contains("survey 1 -title")); // original
+        assertTrue(toString.contains("survey 4 -title")); // b' renamed to 4
+        assertTrue(toString.contains("survey 2 -title")); // original
+
+        assertTrue(toString.contains("equate 0@1 0@3")); // a+ renamed to 3
+        assertTrue(toString.contains("equate 5@1 5@4")); // b' renamed to 4
+        assertTrue(toString.contains("equate 10@2 10@4")); // b' renamed to 4
+
+    }
+
+    private Cave loadCave(String path, String name) throws IOException {
+        InputStream is = TherionWriterTest.class.getResourceAsStream(path);
+        SurveyParser parser = new CompassParser();
+        Networking nw = new FlatNetworking();
+        return parser.parse(name, is, Charset.forName("Cp1252"), nw);
     }
 }
