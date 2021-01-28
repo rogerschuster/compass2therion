@@ -33,6 +33,8 @@ import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,6 +95,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         if (renameSurveys) {
             renameSurveys(cave);
+            renameStations(cave);
         }
 
         // mode line for editor
@@ -114,13 +117,13 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         newLine();
 
         // surveys
-        for (Survey survey : cave.getSurveys()) {
+        cave.getSurveys().forEach(survey -> {
             try {
                 writeSurvey(survey);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 throw new SurveyException("Error while writing survey " + survey.getName(), e);
             }
-        }
+        });
 
         newLine();
         newLine();
@@ -309,7 +312,48 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
                 }
 
             }
-            renameStations(cave, survey);
+
+        }
+    }
+
+    protected void renameStations(Cave cave) {
+        // remember station names
+        Map<String, String> stationNames = new LinkedHashMap<>();
+
+        for (Survey survey : cave.getSurveys()) {
+            for (Shot shot : survey.getShots()) {
+                stationNames.put(shot.getFrom(), shot.getFrom());
+                stationNames.put(shot.getTo(), shot.getTo());
+            }
+        }
+
+        // map old to new station names
+        int cnt = 1;
+        Iterator<Map.Entry<String, String>> iterator = stationNames.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> next = iterator.next();
+            String oldName = next.getKey();
+            String newName = next.getValue();
+            if (SPECIAL.matcher(oldName).matches()) {
+                while (stationNames.values().contains(newName)) {
+                    cnt++;
+                    newName = String.valueOf(cnt);
+                }
+                stationNames.replace(oldName, newName);
+                LOG.log(Level.INFO, "Renaming old station {0} to new station name {1}", new Object[]{oldName, newName});
+            }
+        }
+
+        for (Survey survey : cave.getSurveys()) {
+            for (Shot shot : survey.getShots()) {
+                shot.setFrom(stationNames.get(shot.getFrom()));
+                shot.setTo(stationNames.get(shot.getTo()));
+            }
+        }
+
+        for (Connection conn : cave.getConnections()) {
+            conn.setThisStation(stationNames.get(conn.getThisStation()));
+            conn.setOtherStation(stationNames.get(conn.getOtherStation()));
         }
     }
 
@@ -347,7 +391,4 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         write(val);
     }
 
-    protected void renameStations(Cave cave, Survey survey) {
-        // TODO invalid station names also need renaming
-    }
 }

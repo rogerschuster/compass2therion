@@ -228,6 +228,21 @@ public class TherionWriterTest {
 
     }
 
+    @Test
+    public void renameStations() throws IOException {
+        Cave cave = loadCave("/writer/renamestations.dat", "Testcave");
+        StringWriter out = new StringWriter();
+        SurveyWriter wrt = new TherionWriter(out);
+        wrt.write(StandardCharsets.UTF_8, cave, true);
+        String toString = out.toString();
+        assertTrue(toString.contains("equate 2@1 2@2"));
+        assertTrue(toString.contains("0 2 1.00 1.00 1.00"));
+        assertTrue(toString.contains("2 4 2.00 -1.00 90.00"));
+        assertTrue(toString.contains("4 1 5.00 5.00 80.00"));
+        assertTrue(toString.contains("2 3 5.00 5.00 10.00"));
+        assertTrue(toString.contains("3 5 15.00 -5.00 20.00"));
+    }
+
     private Cave loadCave(String path, String name) throws IOException {
         InputStream is = TherionWriterTest.class.getResourceAsStream(path);
         SurveyParser parser = new CompassParser();

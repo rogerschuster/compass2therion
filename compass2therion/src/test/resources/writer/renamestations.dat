@@ -21,6 +21,6 @@ DECLINATION:    0.00  FORMAT: DMMDLRUDLDAdaNF  CORRECTIONS:  0.00 0.00 0.00  COR
                 FROM                   TO   LENGTH  BEARING      INC     LEFT       UP     DOWN    RIGHT   FLAGS  COMMENTS
 
                   a+                    3    16.40    10.00     5.00     0.00     0.00     0.00     0.00
-                   1                    2    49.21    20.00    -5.00     0.00     0.00     0.00     0.00
+                   3                   c-    49.21    20.00    -5.00     0.00     0.00     0.00     0.00
 
 
