@@ -143,11 +143,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         writeDate(survey.getDate());
 
-        for (String team : survey.getCavers()) {
-            if (team != null && !team.isEmpty()) {
-                writeln("team \"", team, "\"");
-            }
-        }
+        writeTeam(survey);
 
         writeln("units length ", survey.getLengthUnit().getText());
         writeln("units compass ", survey.getAzimutUnit().getText());
@@ -231,6 +227,27 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         newLine();
         newLine();
+    }
+
+    protected void writeTeam(Survey survey) throws IOException {
+        for (String team : survey.getCavers()) {
+            if (team != null && !team.isEmpty()) {
+                String[] split = team.trim().split("\\s+");
+                write("team \"");
+
+                for (int i = 0; i < split.length; i++) {
+                    write(split[i]);
+                    if (i == 0 && split.length > 1) {
+                        write(" ");
+                    } else if (i >= 1 && i < split.length - 1) {
+                        write("_");
+                    }
+                }
+
+                write("\"");
+                newLine();
+            }
+        }
     }
 
     private void write(Shot shot, ShotItems item) throws IOException {

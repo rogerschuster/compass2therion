@@ -243,6 +243,26 @@ public class TherionWriterTest {
         assertTrue(toString.contains("3 5 15.00 -5.00 20.00"));
     }
 
+    @Test
+    public void renamingTeam() throws IOException {
+        StringWriter out = new StringWriter();
+        TherionWriter wrt = new TherionWriter(out);
+
+        Survey s = new Survey();
+        s.addCaver("OneName");
+        s.addCaver("Hugo Habicht");
+        s.addCaver("William Gates III");
+        s.addCaver("Alexander Graf von Hinterdupfing zu Vorderdupfing");
+
+        wrt.writeTeam(s);
+        wrt.flush();
+        String toString = out.toString();
+        assertTrue(toString.contains("team \"OneName\""));
+        assertTrue(toString.contains("team \"Hugo Habicht\""));
+        assertTrue(toString.contains("team \"William Gates_III\""));
+        assertTrue(toString.contains("team \"Alexander Graf_von_Hinterdupfing_zu_Vorderdupfing\""));
+    }
+
     private Cave loadCave(String path, String name) throws IOException {
         InputStream is = TherionWriterTest.class.getResourceAsStream(path);
         SurveyParser parser = new CompassParser();
