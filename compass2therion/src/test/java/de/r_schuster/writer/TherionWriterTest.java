@@ -31,6 +31,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class TherionWriterTest {
 
+    private static final Logger LOG = LogManager.getLogger(TherionWriterTest.class);
     private final String newline = System.getProperty("line.separator");
 
     public TherionWriterTest() {
@@ -58,7 +61,7 @@ public class TherionWriterTest {
         wrt.write(charset, cave, true);
 
         String toString = out.toString();
-        System.err.println(toString);
+        LOG.debug(toString);
 
         List<String> asList = Arrays.asList(toString.split(newline));
         assertEquals("encoding UTF-8", asList.get(0));
@@ -80,7 +83,7 @@ public class TherionWriterTest {
         wrt.write(charset, cave);
 
         String toString = out.toString();
-        System.err.println(toString);
+        LOG.debug(toString);
 
         String[] split = toString.split(newline);
         assertEquals("encoding UTF-8", split[0]);
@@ -99,7 +102,7 @@ public class TherionWriterTest {
         wrt.write(charset, cave);
 
         String toString = out.toString();
-        System.err.println(toString);
+        LOG.debug(toString);
         assertTrue(toString.contains("date 2021.2.1"));
         assertTrue(toString.contains("date 2021.1"));
         assertTrue(toString.contains("date 2022"));
