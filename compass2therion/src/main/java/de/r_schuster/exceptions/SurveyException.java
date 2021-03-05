@@ -22,6 +22,8 @@ package de.r_schuster.exceptions;
  */
 public class SurveyException extends RuntimeException {
 
+    private static final long serialVersionUID = 218372563861598722L;
+
     public SurveyException(String message) {
         super(message);
     }

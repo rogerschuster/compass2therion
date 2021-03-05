@@ -25,6 +25,8 @@ import java.util.Objects;
  */
 public class Connection implements Serializable {
 
+    private static final long serialVersionUID = 5076875597096647280L;
+    
     private String thisStation;
     private String thisSurvey;
     private String otherStation;

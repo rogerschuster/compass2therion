@@ -26,6 +26,8 @@ import java.util.Objects;
  */
 public class Shot implements Serializable {
 
+    private static final long serialVersionUID = 2205653266897270882L;
+
     private String from;
     private String to;
     private BigDecimal length;

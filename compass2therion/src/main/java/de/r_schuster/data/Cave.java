@@ -29,6 +29,8 @@ import java.util.Set;
  */
 public class Cave implements Serializable {
 
+    private static final long serialVersionUID = -4267034400449771615L;
+    
     private final List<Survey> surveys = new ArrayList<>();
     private final String name;
     private final Set<Connection> connections = new HashSet<>();

@@ -24,6 +24,8 @@ import java.io.Serializable;
  */
 public class SurveyDate implements Serializable {
 
+    private static final long serialVersionUID = -207619146665470323L;
+    
     private final int year;
     private final int month;
     private final int day;

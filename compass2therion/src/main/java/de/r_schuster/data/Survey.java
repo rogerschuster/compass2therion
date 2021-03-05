@@ -30,6 +30,8 @@ import java.util.Objects;
  */
 public class Survey implements Serializable {
 
+    private static final long serialVersionUID = -4577414259461364797L;
+
     private final List<Shot> shots = new ArrayList<>();
     private final List<String> cavers = new ArrayList<>();
     private final Map<Integer, Dimensions> dimensionsOrder = new HashMap<>();
