@@ -28,7 +28,7 @@ public enum DimensionsAssociations {
 
     private final char station;
 
-    private DimensionsAssociations(char station) {
+    DimensionsAssociations(char station) {
         this.station = station;
     }
 

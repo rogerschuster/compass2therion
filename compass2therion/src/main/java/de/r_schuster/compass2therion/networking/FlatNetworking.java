@@ -20,9 +20,9 @@ import de.r_schuster.compass2therion.data.Cave;
 import de.r_schuster.compass2therion.data.Connection;
 import de.r_schuster.compass2therion.data.Shot;
 import de.r_schuster.compass2therion.data.Survey;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,14 +56,10 @@ public class FlatNetworking implements Networking {
         Set<String> done = new HashSet<>();
 
         // compare each set of stations to all _other_ sets of stations
-        Iterator<Map.Entry<String, Set<String>>> iterator = mapping.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Set<String>> next = iterator.next();
+        for (Map.Entry<String, Set<String>> next : mapping.entrySet()) {
             String thisSurveyName = next.getKey();
             Set<String> stationsInThisSurvey = next.getValue();
-            Iterator<Map.Entry<String, Set<String>>> otherator = mapping.entrySet().iterator();
-            while (otherator.hasNext()) {
-                Map.Entry<String, Set<String>> other = otherator.next();
+            for (Map.Entry<String, Set<String>> other : mapping.entrySet()) {
                 String otherSurveyName = other.getKey();
                 if (!otherSurveyName.equals(thisSurveyName) && !done.contains(otherSurveyName)) {
                     Set<String> otherStations = other.getValue();

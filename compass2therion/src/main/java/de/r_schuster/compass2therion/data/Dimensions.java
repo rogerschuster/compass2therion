@@ -31,7 +31,7 @@ public enum Dimensions {
     private final char cha;
     private final String text;
 
-    private Dimensions(char cha, String text) {
+    Dimensions(char cha, String text) {
         this.cha = cha;
         this.text = text;
     }

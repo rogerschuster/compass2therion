@@ -169,7 +169,7 @@ public class CompassParser extends AbstractSurveyParser {
         String str = null;
         if (idx2 >= 0 && idx3 == -1) {
             str = line.substring(idx2 + FORMAT_MATCH.length()).trim();
-        } else if (idx2 >= 0 && idx3 >= 0) {
+        } else if (idx2 >= 0) {
             str = line.substring(idx2 + FORMAT_MATCH.length(), idx3).trim();
         }
 
@@ -227,23 +227,16 @@ public class CompassParser extends AbstractSurveyParser {
             survey.getShotItemsOrder().put(3, ShotItems.getByType(format[10])); // third shot item (length, azimut...)
 
             if (format.length == 12 || format.length == 13) {
-                if (format[11] == 'B') {
-                    survey.setReverse(true);
-                } else {
-                    survey.setReverse(false);
-                }
+                survey.setReverse(format[11] == 'B');
             }
+
             if (format.length == 13) {
                 survey.setDimensionsAssociation(DimensionsAssociations.getByStation(format[12]));
             }
             if (format.length == 15) {
                 survey.getShotItemsOrder().put(4, ShotItems.getByType(format[11])); // fourth shot item (length, azimut...)
                 survey.getShotItemsOrder().put(5, ShotItems.getByType(format[12])); // fifth shot item (length, azimut...)
-                if (format[13] == 'B') {
-                    survey.setReverse(true);
-                } else {
-                    survey.setReverse(false);
-                }
+                survey.setReverse(format[13] == 'B');
                 survey.setDimensionsAssociation(DimensionsAssociations.getByStation(format[14]));
             }
 

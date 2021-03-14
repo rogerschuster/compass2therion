@@ -347,13 +347,11 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
         // map old to new station names
         int cnt = 1;
-        Iterator<Map.Entry<String, String>> iterator = stationNames.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> next = iterator.next();
+        for (Map.Entry<String, String> next : stationNames.entrySet()) {
             String oldName = next.getKey();
             String newName = next.getValue();
             if (SPECIAL.matcher(oldName).matches()) {
-                while (stationNames.values().contains(newName)) {
+                while (stationNames.containsValue(newName)) {
                     cnt++;
                     newName = String.valueOf(cnt);
                 }

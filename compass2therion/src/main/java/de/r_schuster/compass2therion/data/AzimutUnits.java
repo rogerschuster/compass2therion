@@ -30,7 +30,7 @@ public enum AzimutUnits {
     private final char unit;
     private final String text;
 
-    private AzimutUnits(char unit, String text) {
+    AzimutUnits(char unit, String text) {
         this.unit = unit;
         this.text = text;
     }
@@ -42,7 +42,7 @@ public enum AzimutUnits {
                 return a;
             }
         }
-        throw new SurveyException(uni + " is a not supported azimut unit");
+        throw new SurveyException(uni + " is a not supported azimuth unit");
     }
 
     public String getText() {

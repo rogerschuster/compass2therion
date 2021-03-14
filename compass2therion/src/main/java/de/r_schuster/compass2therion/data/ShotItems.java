@@ -32,7 +32,7 @@ public enum ShotItems {
     private final char cha;
     private final String text;
 
-    private ShotItems(char cha, String text) {
+    ShotItems(char cha, String text) {
         this.cha = cha;
         this.text = text;
     }

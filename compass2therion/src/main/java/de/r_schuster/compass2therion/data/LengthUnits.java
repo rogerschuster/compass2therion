@@ -30,7 +30,7 @@ public enum LengthUnits {
     private final char unit;
     private final String text;
 
-    private LengthUnits(char unit, String text) {
+    LengthUnits(char unit, String text) {
         this.unit = unit;
         this.text = text;
     }

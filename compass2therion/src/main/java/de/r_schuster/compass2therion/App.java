@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,9 +69,9 @@ public class App {
             cave = parser.parse(cavename, is, Charset.forName("Cp1252"), networking);
         }
 
-        try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outfile), Charset.forName("UTF-8"))) {
+        try (Writer wrt = new OutputStreamWriter(new FileOutputStream(outfile), StandardCharsets.UTF_8)) {
             SurveyWriter writer = new TherionWriter(wrt);
-            writer.write(Charset.forName("UTF-8"), cave, renameSurvey);
+            writer.write(StandardCharsets.UTF_8, cave, renameSurvey);
         }
     }
 

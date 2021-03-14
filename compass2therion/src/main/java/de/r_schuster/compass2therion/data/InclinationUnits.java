@@ -31,7 +31,7 @@ public enum InclinationUnits {
     private final char unit;
     private final String text;
 
-    private InclinationUnits(char unit, String text) {
+    InclinationUnits(char unit, String text) {
         this.unit = unit;
         this.text = text;
     }
