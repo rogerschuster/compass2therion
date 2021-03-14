@@ -128,7 +128,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        de.r_schuster.App
+                                        de.r_schuster.compass2therion.App
                                     </mainClass>
                                 </manifest>
                             </archive>
