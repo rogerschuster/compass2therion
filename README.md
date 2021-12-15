@@ -10,7 +10,7 @@ Compass has an user friendly editor for quickly and comfortably entering, organi
 
 While Compass allows almost any alphanumeric values to identify the individual surveys Therion supports a limited range of values. compass2therion emits warnings if it finds invalid survey names. The program offers an optional argument that allows the automated renaming of problematic surveys. Anyway, any automated modifications will only affect the output file, never the input data!
 
-**compass2therion** is written in Java and requires at least a Java environment in Version 11 or later. Check out [Amazon Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) or [OpenJDK](https://adoptopenjdk.net/) for downloads. 
+**compass2therion** is written in Java and requires at least a Java environment in Version 11 or later. Check out [Amazon Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) or [OpenJDK](https://adoptium.net/?variant=openjdk11) for downloads. 
 
 The usage is quite simple. Open a command window / console, change to the location where you have downloaded **compass2therion** to and execute the command 
 
