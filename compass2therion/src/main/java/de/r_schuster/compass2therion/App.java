@@ -17,14 +17,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 
 public class App {
 
-    private static final Logger LOG = LogManager.getLogger(App.class);
+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
     private static final String NL = System.getProperty("line.separator");
 
     public static void main(String[] args) throws IOException {
@@ -88,6 +88,6 @@ public class App {
         sb.append("--input \"c:\\caves\\cave.dat\" --output \"c:\\caves\\cave.th\" --cavename \"Big Cave\" --renamesurvey").append(NL);
         sb.append(NL);
         sb.append("If you get a warning message containing \"Survey name contains non-alphanumeric characters\" try the optional argument --renamesurvey").append(NL);
-        LOG.info(sb.toString());
+        LOGGER.info(sb.toString());
     }
 }

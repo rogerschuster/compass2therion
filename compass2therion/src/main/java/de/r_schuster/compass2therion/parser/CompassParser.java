@@ -36,8 +36,9 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -45,7 +46,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class CompassParser extends AbstractSurveyParser {
 
-    private static final Logger LOG = LogManager.getLogger(CompassParser.class);
+    private static final Logger LOGGER = Logger.getLogger(CompassParser.class.getName());
 
     private static final String FORM_FEED = "\u000C";
     private static final String SUB = "\u001A";
@@ -185,7 +186,7 @@ public class CompassParser extends AbstractSurveyParser {
             AzimutUnits azUn;
             if (AzimutUnits.getByUnit(format[0]).equals(AzimutUnits.QUADS)) {
                 azUn = AzimutUnits.DEGREES; // workaround for quads (Brunton compass and similar devices)
-                LOG.info("Converting azimut in quads to degrees. Survey {}", survey.getName());
+                LOGGER.log(Level.INFO, "Converting azimut in quads to degrees. Survey {0}", survey.getName());
             } else {
                 azUn = AzimutUnits.getByUnit(format[0]);
             }
@@ -194,7 +195,7 @@ public class CompassParser extends AbstractSurveyParser {
             LengthUnits lenUn;
             if (LengthUnits.getByUnit(format[1]).equals(LengthUnits.FEET_INCHES)) {
                 lenUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
-                LOG.info("Converting length in feet and inches to decimal feet. Survey {}", survey.getName());
+                LOGGER.log(Level.INFO, "Converting length in feet and inches to decimal feet. Survey {0}", survey.getName());
             } else {
                 lenUn = LengthUnits.getByUnit(format[1]);
             }
@@ -203,7 +204,7 @@ public class CompassParser extends AbstractSurveyParser {
             LengthUnits dimUn;
             if (LengthUnits.getByUnit(format[2]).equals(LengthUnits.FEET_INCHES)) {
                 dimUn = LengthUnits.FEET_DECIMAL; // workaround for feet and inches
-                LOG.info("Converting passage dimensions in feet and inches to decimal feet. Survey {}", survey.getName());
+                LOGGER.log(Level.INFO, "Converting passage dimensions in feet and inches to decimal feet. Survey {0}", survey.getName());
             } else {
                 dimUn = LengthUnits.getByUnit(format[2]);
             }
@@ -212,7 +213,7 @@ public class CompassParser extends AbstractSurveyParser {
             InclinationUnits incUn;
             if (InclinationUnits.getByUnit(format[3]).equals(InclinationUnits.DEGREES_MINUTES)) {
                 incUn = InclinationUnits.DEGREES; // workaround for degrees and minutes
-                LOG.info("Converting inclination in degrees and minutes to degrees. Survey {}", survey.getName());
+                LOGGER.log(Level.INFO, "Converting inclination in degrees and minutes to degrees. Survey {0}", survey.getName());
             } else {
                 incUn = InclinationUnits.getByUnit(format[3]);
             }
@@ -347,10 +348,10 @@ public class CompassParser extends AbstractSurveyParser {
             if (azimut != null && azimutReverse != null) {
                 if (azimut.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
                     azimut = flipAzimut(azimutReverse);
-                    LOG.info("Survey {}, Shot {}-{}: Flipping azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                    LOGGER.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
                 } else if (azimutReverse.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
                     azimutReverse = flipAzimut(azimut);
-                    LOG.info("Survey {}, Shot {}-{}: Flipping reverse azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                    LOGGER.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping reverse azimut.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
                 }
                 shot.setReverseAzimut(convertAzimut(azimutReverse, survey));
             }
@@ -358,10 +359,10 @@ public class CompassParser extends AbstractSurveyParser {
             if (inclination != null && inclinationReverse != null) {
                 if (inclination.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
                     inclination = flipInc(inclinationReverse);
-                    LOG.info("Survey {}, Shot {}-{}: Flipping inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                    LOGGER.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
                 } else if (inclinationReverse.setScale(2, RoundingMode.HALF_UP).compareTo(NINE_NINE_NINE) == 0) {
                     inclinationReverse = flipInc(inclination);
-                    LOG.info("Survey {}, Shot {}-{}: Flipping reverse inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+                    LOGGER.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Flipping reverse inclination.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
                 }
                 shot.setReverseInclination(inclinationReverse);
             }
@@ -428,7 +429,7 @@ public class CompassParser extends AbstractSurveyParser {
      */
     private BigDecimal convertDim(Survey survey, Shot shot, String s) {
         if (s.contains("-")) {
-            LOG.info("Survey {}, Shot {}-{}: Setting a LRUD value to zero.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
+            LOGGER.log(Level.INFO, "Survey {0}, Shot {1}-{2}: Setting a LRUD value to zero.", new Object[]{survey.getName(), shot.getFrom(), shot.getTo()});
             return BigDecimal.ZERO;
         } else {
             BigDecimal len = new BigDecimal(s); // default unit is decimal feet

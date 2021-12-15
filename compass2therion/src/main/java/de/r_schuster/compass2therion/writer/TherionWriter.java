@@ -34,15 +34,15 @@ import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 /**
  *
@@ -50,7 +50,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
-    private static final Logger LOG = LogManager.getLogger(TherionWriter.class);
+    private static final Logger LOGGER = Logger.getLogger(TherionWriter.class.getName());
     private static final String COMMENT = "# ";
     private static final Pattern SPECIAL = Pattern.compile("^.*\\W.*$");
 
@@ -134,8 +134,9 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private void writeSurvey(Survey survey) throws IOException {
         if (SPECIAL.matcher(survey.getName()).matches()) {
-            LOG.warn("Survey name {} contains non-alphanumeric characters. This may cause problems in Therion.", survey.getName());
+            LOGGER.log(Level.WARNING, "Survey name {0} contains non-alphanumeric characters. This may cause problems in Therion.", survey.getName());
         }
+        
         writeln("survey ", survey.getName(), " -title \"", survey.getComment(), "\"");
         commentln(survey.getCaveName());
         commentln(survey.getComment());
@@ -175,11 +176,12 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
         // survey shots
         for (Shot shot : survey.getShots()) {
             if (SPECIAL.matcher(shot.getFrom()).matches()) {
-                LOG.warn("Station name {} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getFrom());
+                LOGGER.log(Level.WARNING, "Station name {0} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getFrom());
             }
             if (SPECIAL.matcher(shot.getTo()).matches()) {
-                LOG.warn("Station name {} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getTo());
+                LOGGER.log(Level.WARNING, "Station name {0} contains non-alphanumeric characters. This may cause problems in Therion.", shot.getTo());
             }
+            
             write(shot.getFrom(), " ", shot.getTo(), " ");
 
             for (Integer i : l) {
@@ -315,7 +317,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
                 }
                 surveyNames.remove(oldSurveyName);
                 surveyNames.add(newSurveyName);
-                LOG.info("Renaming old survey {} to new survey name {}", new Object[]{oldSurveyName, newSurveyName});
+                LOGGER.log(Level.INFO, "Renaming old survey {0} to new survey name {1}", new Object[]{oldSurveyName, newSurveyName});
                 // renaming survey
                 survey.setName(newSurveyName);
 
@@ -356,7 +358,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
                     newName = String.valueOf(cnt);
                 }
                 stationNames.replace(oldName, newName);
-                LOG.info("Renaming old station {} to new station name {}", new Object[]{oldName, newName});
+                LOGGER.log(Level.INFO, "Renaming old station {0} to new station name {1}", new Object[]{oldName, newName});
             }
         }
 
@@ -403,7 +405,7 @@ public class TherionWriter extends BufferedWriter implements SurveyWriter {
 
     private void writeTwoDigitDate(int upd, SurveyDate date) throws IOException {
         String val = String.valueOf(upd);
-        LOG.info("Two digits year {} converted to {}", new Object[]{date.getYear(), val});
+        LOGGER.log(Level.INFO, "Two digits year {0} converted to {1}", new Object[]{date.getYear(), val});
         write(val);
     }
 
