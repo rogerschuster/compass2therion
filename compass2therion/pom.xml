@@ -6,7 +6,7 @@
 
     <groupId>de.r_schuster</groupId>
     <artifactId>compass2therion</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <name>compass2therion</name>
     <url>https://github.com/rogerschuster/compass2therion</url>
