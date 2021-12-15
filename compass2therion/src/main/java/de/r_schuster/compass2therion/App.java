@@ -17,12 +17,20 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-
-
-
 public class App {
+
+    static {
+        InputStream is = App.class.getClassLoader().getResourceAsStream("logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(is);
+        } catch (IOException e) {
+            Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+            Logger.getAnonymousLogger().severe(e.getMessage());
+        }
+    }
 
     private static final Logger LOGGER = Logger.getLogger(App.class.getName());
     private static final String NL = System.getProperty("line.separator");
